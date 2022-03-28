@@ -6,8 +6,9 @@ let Login_module = (() =>{
 
             let login = LoginData.login;
             let password = LoginData.password;
-
+            console.log(`${login} ${password}`)
             let login_response = await fetch('/MPEE/api/login/' + login + '/' + password, { method: 'GET', headers: { 'Token': 'null' }});
+            console.log(login_response)
             if (login_response.ok) {
                 const data = await login_response.json();
 

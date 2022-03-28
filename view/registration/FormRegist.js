@@ -1,4 +1,5 @@
 let Registration_module = require('./module/Registration.js');
+let FormStart_module = require('../start/start_page_form.js');
 
 let FormRegist_module = (() => {
 
@@ -30,8 +31,7 @@ let FormRegist_module = (() => {
             document.querySelector('.E_button').innerHTML = '<div class="back-button my-button">Назад</div>'+
             '<div class="sign-up-button my-button">Зарегистрироваться</div>';
 
-            
-            document.querySelector('.back-button').onclick = () => FormStart_module.BackStart();
+            document.querySelector('.back-button').onclick = () => FormStart_module.BackStart;
 
             document.querySelector('.sign-up-button').onclick = function () {
 

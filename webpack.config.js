@@ -1,9 +1,8 @@
 module.exports = {
-    entry: './WEB/site/view/start/start_page_form.js',
+    mode:'production',
+    entry: './view/module/index.js',
     output: {
-        libraryTarget: 'umd',
-        library: 'FormStart_module',
-        path: __dirname + '/WEB/site/',
+        path: __dirname + '/WEB/',
         filename: 'bundle.js'
     },
     devServer: {
@@ -11,10 +10,13 @@ module.exports = {
           directory : __dirname + '/WEB/'
         },
         port: 3000,
-        devMiddleware:{
-           publicPath: "https://localhost:3000/",
+        client: {
+          webSocketURL: 'https://localhost:8080/',
         },
-        hot: "only"
+        devMiddleware:{
+           publicPath: "https://localhost:8080/",
+        },
+        hot: true
     },
     module: {
         rules: [

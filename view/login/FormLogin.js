@@ -1,6 +1,7 @@
 "use strict";
 let Login_module = require('./module/Login.js');
 let FormWork_module = require('../work/work_form.js');
+let FormStart_module = require('../start/start_page_form.js');
 
 let FormLogin_module = (() => {
 
@@ -22,8 +23,9 @@ let FormLogin_module = (() => {
             document.querySelector('.E_main').innerHTML = this.FormLogin;
             document.querySelector('.E_button').innerHTML = '<div class="back-button my-button">Назад</div>'+
             '<div class="log-in-button my-button">Войти</div>';
-            console.log(FormStart_module);
-            document.querySelector('.back-button').onclick = FormStart_module.BackStart;
+            document.querySelector('.back-button').onclick = ()=>{
+                console.log(FormStart_module);
+                FormStart_module.BackStart;};
             
 
             document.querySelector('.log-in-button').onclick = () => {
@@ -32,7 +34,7 @@ let FormLogin_module = (() => {
                     login: document.querySelector('.name-log-in').value,
                     password: document.querySelector('.pass-log-in').value
                 };
-
+                    
                 let promise = Login_module.Login_async(LoginData);
 
                 let text =  document.querySelector('.E_info .text-info');
