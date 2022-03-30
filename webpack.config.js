@@ -9,7 +9,7 @@ module.exports = {
         static : {
           directory : __dirname + '/WEB/'
         },
-        port: 3000,
+        port: 6009,
         client: {
           webSocketURL: 'https://localhost:8080/',
         },

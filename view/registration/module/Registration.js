@@ -1,12 +1,16 @@
 "use strict";
 
+const my_fetch = require('../../module/my_fetch.js').my_fetch_async;
+
 let Registration_module = (()=>{
 
     class Registration_class {
 
         async Registration_async(RegData) {
 
-            let response = await fetch('/MPEE/api/registration', { method: 'POST', headers: { 'Content-Type': 'application/json;charset=utf-8' }, body: JSON.stringify(RegData)});
+            let response = await my_fetch('registration/', { method: 'POST', headers: { 'Content-Type': 'application/json;charset=utf-8' }, body: JSON.stringify(RegData)});
+            //let response = await fetch('/MPEE/api/registration', { method: 'POST', headers: { 'Content-Type': 'application/json;charset=utf-8' }, body: JSON.stringify(RegData)});
+            
             if (response.ok) {
                 let data = await response.json();
                 let Msg = "";
