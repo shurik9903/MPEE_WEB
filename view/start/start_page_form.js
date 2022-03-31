@@ -1,5 +1,8 @@
+"use strict";
+
 let FormLogin_module = require('../login/FormLogin.js');
 let FormRegist_module = require('../registration/FormRegist.js');
+let Start_module = require('./module/start_page_module.js');
 
 let FormStart_module = (() =>  {
 
@@ -35,6 +38,7 @@ let FormStart_module = (() =>  {
             document.body.innerHTML = this.FormFirstButtons;
             document.querySelector('.log-in-form-button').onclick = FormLogin_module.ShowLogin;
             document.querySelector('.sign-up-form-button').onclick = FormRegist_module.ShowRegistration;
+            Start_module.Start()
         };
 
         BackStart() {

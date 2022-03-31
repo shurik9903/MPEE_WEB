@@ -1,3 +1,5 @@
+"use strict";
+
 let Registration_module = require('./module/Registration.js');
 let FormStart_module = require('../start/start_page_form.js');
 

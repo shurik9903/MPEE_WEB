@@ -1,3 +1,5 @@
+"use strict";
+
 let my_fetch_module = (() => {
 
     class my_fetch_class {

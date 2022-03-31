@@ -10,12 +10,6 @@ module.exports = {
           directory : __dirname + '/WEB/'
         },
         port: 6009,
-        client: {
-          webSocketURL: 'https://localhost:8080/',
-        },
-        devMiddleware:{
-           publicPath: "https://localhost:8080/",
-        },
         hot: true
     },
     module: {
