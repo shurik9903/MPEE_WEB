@@ -10,36 +10,15 @@
     flex-direction: column;
     flex-wrap: nowrap;
 
-    
-    /*background: radial-gradient(ellipse at bottom, #658eff 20%, #000011 100%); */
-    background: 
-    linear-gradient(-45deg, #0400ff, #000213, transparent 80%),   
-    linear-gradient(45deg, #000ac5, #001214, transparent 70%), 
-    linear-gradient(120deg, #00021f, #0051ff, transparent 70%), 
-    linear-gradient(-90deg, #00395a, #0a001b, transparent 70%);
-
-    background-size: 400% 400%;
-    
-    animation: back_gradient 40s ease infinite;
+    background: radial-gradient(ellipse at bottom, #283a4e 0%, #0b0d16 100%);
 
     min-height: 800px;
     min-width: 800px;
     height: 100vh;
 }
 
-
-@keyframes back_gradient {
-    
-	0% {background-position: 0% 50%;}
-
-	33% {background-position: 50% 100%;}
-
-	66% {background-position: 100% 50%;}
-
-    100% {background-position: 0% 0%;}
-}
-
 .head,.footer {
+    z-index: 1;
     display: flex;
 
     background: #333;
@@ -65,9 +44,11 @@
     border-image-slice: 1;
     border-image-source: linear-gradient(to left,#d6e9ff 0%, #0077ff 5%,#004594 20%,#002857 40%,#001c3d 50%,
      #002857 60%,#004594 80%,#0077ff 95%,#d6e9ff 100%,transparent 80%);
+     
 }
 
 .main {
+    position: relative;
     display: flex;
 
     width: 100%;
@@ -78,6 +59,7 @@
 }
 
 .entry{
+    z-index: 1;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -95,7 +77,7 @@
     border-image-slice: 1;
 
     border-image-source: linear-gradient(to top,#74b5ff 0%, #002857 25%,#004594 50%,#0077ff 90%,#d6e9ff 100%,transparent 80%);
-    animation: entry_border_anim linear 5s infinite; 
+    animation: entry_border_anim linear 10s infinite; 
 }
 
 @keyframes entry_border_anim {
