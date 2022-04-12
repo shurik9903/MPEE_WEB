@@ -8,30 +8,30 @@ let FormRegist_module = (() => {
     class FormRegist_class {
 
 
-        FormRegistration = '<div class="sign-up-form">'+
-        '<div class="input-email">'+
-            '<p>Почта</p>'+
-            '<input type="text" size="25" class="email-sign-up"></p>'+
-        '</div>'+
-        '<div class="input-login">'+
-            '<p>Логин</p>'+
-            '<input type="text" size="25" class="login-sign-up"></p>'+
-        '</div>'+
-        '<div class="input-pass1">'+
-            '<p>Пароль</p>'+
-            '<input type="text" size="25" class="pass1-sign-up"></p>'+
-        '</div>'+
-        '<div class="input-pass2">'+
-            '<p>Повторите пароль</p>'+
-            '<input type="text" size="25" class="pass2-sign-up"></p>'+
-        '</div>'+
-    '</div>';
+        FormRegistration = `<div class="sign-up-form">
+        <div class="input-email">
+            <p>Почта</p>
+            <input type="text" size="25" class="email-sign-up"></p>
+        </div>
+        <div class="input-login">
+            <p>Логин</p>
+            <input type="text" size="25" class="login-sign-up"></p>
+        </div>
+        <div class="input-pass1">
+            <p>Пароль</p>
+            <input type="text" size="25" class="pass1-sign-up"></p>
+        </div>
+        <div class="input-pass2">
+            <p>Повторите пароль</p>
+            <input type="text" size="25" class="pass2-sign-up"></p>
+        </div>
+        </div>`;
 
 
         ShowRegistration() {
             document.querySelector('.E_main').innerHTML = this.FormRegistration;
-            document.querySelector('.E_button').innerHTML = '<div class="back-button my-button">Назад</div>'+
-            '<div class="sign-up-button my-button">Зарегистрироваться</div>';
+            document.querySelector('.E_button').innerHTML = `<div class="back-button my-button">Назад</div>
+            <div class="sign-up-button my-button">Зарегистрироваться</div>`;
 
             document.querySelector('.back-button').onclick = () => FormStart_module.BackStart;
 

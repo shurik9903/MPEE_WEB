@@ -1,38 +1,38 @@
 "use strict";
 
+let Start_module = require('./module/start_page_module.js');
 let FormLogin_module = require('../login/FormLogin.js');
 let FormRegist_module = require('../registration/FormRegist.js');
-let Start_module = require('./module/start_page_module.js');
 
 let FormStart_module = (() =>  {
 
     class FormStart_class {
 
-        FormFirstButtons = '<div class="wrapper">'+
-        '<div class="back">'+
-            '<div class="head border-gradient">'+
-                '<div>СиММиР</div>'+
-            '</div>'+
-            '<div class="main">'+
-                '<div class="entry border-gradient">'+
-                    '<div class="E_head">'+
-                        '<div>Авторизация</div>'+
-                    '</div>'+
-                    '<div class="E_main"></div>'+
-                    '<div class="E_info">'+
-                        '<div class="text-info"></div>'+
-                    '</div>'+
-                    '<div class="E_button">'+
-                        '<div class="log-in-form-button my-button">Log in</div>'+
-                        '<div class="sign-up-form-button my-button">Sign up</div>'+
-                    '</div>'+
-                '</div>'+
-            '</div>'+
-            '<div class="footer border-gradient">'+
-                '<div>Информация</div>'+
-            '</div>   '+
-        '</div>'+
-    '</div>';
+        FormFirstButtons = `<div class="wrapper">
+        <div class="back">
+            <div class="head border-gradient">
+                <div>СиММиР</div>
+            </div>
+            <div class="main">
+                <div class="entry border-gradient">
+                    <div class="E_head">
+                        <div>Авторизация</div>
+                    </div>
+                    <div class="E_main"></div>
+                    <div class="E_info">
+                        <div class="text-info"></div>
+                    </div>
+                    <div class="E_button">
+                        <div class="log-in-form-button my-button">Log in</div>
+                        <div class="sign-up-form-button my-button">Sign up</div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer border-gradient">
+                <div>Информация</div>
+            </div>   
+        </div>
+    </div>`;
 
         ShowStart() {
             document.body.innerHTML = this.FormFirstButtons;
@@ -44,8 +44,8 @@ let FormStart_module = (() =>  {
         BackStart() {
             document.querySelector('.E_main').innerHTML = '';
             document.querySelector('.E_info .text-info').innerHTML = '';
-            document.querySelector('.E_button').innerHTML = '<div class="log-in-form-button my-button">Log in</div>'+
-                                                            '<div class="sign-up-form-button my-button">Sign up</div>';
+            document.querySelector('.E_button').innerHTML = `<div class="log-in-form-button my-button">Log in</div>
+                                                            <div class="sign-up-form-button my-button">Sign up</div>`;
             document.querySelector('.log-in-form-button').onclick = FormLogin_module.ShowLogin;
             document.querySelector('.sign-up-form-button').onclick = FormRegist_module.ShowRegistration;
         }

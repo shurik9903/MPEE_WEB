@@ -7,42 +7,30 @@ let Start_module = (() =>  {
 
     class Start_class {
 
-        star_box_constructor(){
+        star_box_constructor(color1 = {red: 255, green: 255, blue: 255}, color2 = {red: 255, green: 255, blue: 255}){
             let pos = `${my_rand(5000)}px ${my_rand(5000)}px`;
-
-            let color1 = {red: 214, green: 233, blue: 255};
-            let color2 = {red: 0, green: 69, blue: 148};
             let color = my_random_Color_Gradient(my_rand(100)/100, color1, color2);
 
-            let glow = NaN;
-            let spread = NaN;
-            let blur = NaN;
+            let spread = my_rand(3, 1)
 
+            let blur = spread + my_rand(2, 1)
+            
             let star = `${pos} ${color}`;
 
             for (let i = 1; i <= 3; i++){
                 color = my_random_Color_Gradient(my_rand(100)/100, color1, color2);
-                // glow = my_rand(4,0);
-                // spread = `${glow}px`;
-                // blur = `${glow + my_rand(3,1)}px`;
-                star = `${star}, ${pos} ${i+1} ${i} ${color}`;
+                star = `${star}, ${pos} ${i+spread}px ${i+blur}px ${color}`;
             };
 
             return star;
-            //let star = `${my_rand(5000)}px ${my_rand(5000)}px ${my_rand(10)}px ${my_rand(10)}px ${color}`;
         };
 
-        star_box_array(number) {
-            let All_Star = `${my_rand(5000)}px ${my_rand(5000)}px ${my_rand(10)}px ${my_rand(10)}px #FFF`
-            let color1 = {red: 214, green: 233, blue: 255};
-            let color2 = {red: 0, green: 69, blue: 148};
-            let color = NaN;
+        star_box_array(number, color1 = {red: 255, green: 255, blue: 255}, color2 = {red: 255, green: 255, blue: 255}) {
+            let All_Star = []
             for (let i = 1; i <= number; i++){
-                color = my_random_Color_Gradient(my_rand(100)/100, color1, color2);
-                console.log(color);
-                All_Star = `${All_Star}, ${my_rand(5000)}px ${my_rand(5000)}px ${my_rand(10)}px ${my_rand(10)}px ${color}`;
+                All_Star.push(this.star_box_constructor(color1, color2));
             };
-            return All_Star;
+            return All_Star.join();
         };
 
         css_star() {
@@ -50,12 +38,12 @@ let Start_module = (() =>  {
             let form = document.querySelector('.main')
 
             let top = form.offsetHeight
-
+            
             var my_style_star = document.createElement('style');
-
-            let Star_Small = this.star_box_array(5000);
-            let Star_Medium = this.star_box_array(2500);
-            let Star_Large = this.star_box_array(1000);
+            
+            let Star_Small = this.star_box_array(3000, {red: 90, green: 160, blue: 255}, {red: 60, green: 60, blue: 150});
+            let Star_Medium = this.star_box_array(1500, {red: 116, green: 181, blue: 255}, {red: 255, green: 220, blue: 180});
+            let Star_Large = this.star_box_array(1000, {red: 90, green: 90, blue: 150}, {red: 210, green: 210, blue: 255});
 
             my_style_star.innerHTML = 
             `.Star1, .Star2, .Star3 { 
@@ -64,7 +52,6 @@ let Start_module = (() =>  {
                 border-radius: 50%;
                 left: 0;
                 top: 0;
-                
             }
 
             .Star1 { 
@@ -74,14 +61,14 @@ let Start_module = (() =>  {
             }
             
             .Star2 { 
-                width: 2px; 
-                height: 2px; 
+                width: 3px; 
+                height: 3px; 
                 box-shadow: ${Star_Medium}
             }
 
             .Star3 { 
-                width: 3px; 
-                height: 3px; 
+                width: 8px; 
+                height: 8px; 
                 box-shadow: ${Star_Large}
             }`;
             

@@ -21,7 +21,7 @@
     z-index: 1;
     display: flex;
 
-    background: #333;
+    background: rgb(0, 0, 0);
     color: #fff;
     
     width: 100%;
@@ -33,10 +33,12 @@
 }
 
 .head {
+    background: radial-gradient(ellipse at top, #2b2b2b 0%, #000000 100%);
     border-bottom: 5px solid;
 }
 
 .footer {
+    background: radial-gradient(ellipse at bottom, #2b2b2b 0%, #000000 100%);
     border-top: 5px solid;
 }
 
@@ -82,7 +84,7 @@
 
 @keyframes entry_border_anim {
     
-    0% { border-image-source: linear-gradient(to top,#74b5ff 0%, #002857 25%,#004594 50%,#0077ff 75%,#d6e9ff 100%,transparent 80%);}
+    0% { border-image-source: linear-gradient(to top,hsl(212, 100%, 73%) 0%, rgb(0, 40, 87) 25%,#004594 50%,#0077ff 75%,#d6e9ff 100%,transparent 80%);}
 
     20% { border-image-source: linear-gradient(to top,#002857 0%,#004594 25%,#0077ff 50%,#d6e9ff 75%, #74b5ff 100%,transparent 80%);}
     

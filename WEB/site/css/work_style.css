@@ -5,10 +5,20 @@
     font-family: Arial;
 }
 
+body {
+    
+    background: radial-gradient(ellipse at top, #2b2b2b 0%, #000000 50%, transparent), 
+    radial-gradient(ellipse at bottom, #2b2b2b 0%, #000000 50%, transparent), 
+    radial-gradient(ellipse at left, #2b2b2b 0%, #000000 50%, transparent),
+    radial-gradient(ellipse at top, #2b2b2b 0%, #000000 50%, transparent);
+}
+
 .back {
     display: flex;
     flex-direction: column;
-    background: #333;
+    background: rgb(32, 32, 32);
+    border: 5px solid rgb(70, 70, 70);
+    border-radius: 20px;
     color: #fff;
     margin: 1% 1%;
 
@@ -18,24 +28,27 @@
 }
 
 .menu-wrapper{
-    background: #555;
+    background: rgb(32, 32, 32);
     color: #fff;
-    margin: 10px 2.5%;
+    margin: 20px 2.5% 10px;
     width: 95%;
+    border: 5px solid rgb(70, 70, 70);
+    border-radius: 10px;
 }
 
 .menu-wrapper ul{
-    border: 5px solid #000;
     border-spacing: 10px 10px;
 }
 
 .my_scroll {
     display: flex;
     overflow: hidden;
-    overflow-x: visible;
+    overflow-x: auto;
     cursor: grab;
     padding: 5px 5px;
+    border-radius: 10px;
 }
+
 
 .my_scroll li {
     background-color: #fff;
@@ -44,7 +57,7 @@
     text-align: center;
     padding: 20px 10px;
     white-space: nowrap;
-    border: 5px solid #000;
+    border: 5px solid rgb(70, 70, 70);
     border-radius: 10px;
     user-select: none;
 }
@@ -57,12 +70,12 @@
 
 .main {
     flex: 1 0 auto;
-    border: 5px solid #fff;
+    border: 5px solid rgb(70, 70, 70);
     background: #555;
     color: #fff;
     margin: 10px 2.5% 2.5%;
     position: relative;
-    
+    border-radius: 20px;
     height: 0;
 }
 
@@ -71,6 +84,8 @@
     overflow: scroll;
     min-height: 100%;
     height: 0;
+    background: #555;
+    border-radius: 20px;
 }
 
 .game {
@@ -81,6 +96,7 @@
     background-image: url("791455802.jpg");
     background-size: 200px;
     animation: back_glowing 20s infinite;
+    border-radius: 20px;
 }
 
 
@@ -94,22 +110,31 @@
     100% { -webkit-filter: brightness(1);}
 }
 
-.bar {
+.menu_bar {
     display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
     position: absolute;
     z-index: 100;
     min-height: 100%;
+}
+
+.bar {
+    display: flex;
+    min-height: 100%;
+    max-width: 0;
+    overflow: hidden;
+
+    transition: max-width 0.2s ease-out;
+
 }
 
 .left-bar {
     background: rgb(88, 88, 88);
     display: flex;
     flex-direction: column;
-    min-height: 100%;
     width: 250px;
-    border: 5px solid rgb(0, 0, 0);
+    border: 5px solid rgb(70, 70, 70);
+    border-radius: 16px;
+    max-width: 100%;
 }
 
 .right-bar {
@@ -117,15 +142,41 @@
     background: rgb(88, 88, 88);
     display: flex;
     flex-direction: column;
-    min-height: 100%;
     width: 250px;
-    border: 5px solid rgb(0, 0, 0);
+    border: 5px solid rgb(70, 70, 70);
+    border-radius: 16px;
+    max-width: 100%;
 }
 
+.collapse_button {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    align-self: center;
+
+    border: 5px solid rgb(70, 70, 70);
+    border-radius: 10px;
+
+    background: rgb(88, 88, 88);
+    
+    width: 30px;
+    height: 60px;
+    
+    font-size: 20px;
+    
+}
+
+.collapse_button:hover {
+    cursor: pointer;
+}
 
 .scroll_bar_menu {
-    border-bottom: 5px solid #000;
+    border-bottom: 5px solid rgb(70, 70, 70);
     height: 105px;
+    background: rgb(32, 32, 32);
+    border-radius: 10px;
 }
 
 .scroll_bar_menu ul{
@@ -133,6 +184,7 @@
 }
 
 .view_menu {
+    background: rgb(32, 32, 32);
     flex: 1 0 auto;
     height: 0;
     margin: 2.5% 2.5%;
