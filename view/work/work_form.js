@@ -9,32 +9,40 @@ let FormWork_module = (() => {
         FormBodyWork = `<div class="wrapper">
         <div class="back">
             <div class="menu-wrapper">
-                <ul class="my_scroll">
-                    <li>
-                        <p>меню-текст-1</p>
-                    </li>
-                    <li>
-                        <p>меню-текст-2</p>
-                    </li>
-                    <li>
-                        <p>меню-текст-3</p>
-                    </li>
-                    <li>
-                        <p>меню-текст-4</p>
-                    </li>
-                    <li>
-                        <p>меню-текст-5</p>
-                    </li>
-                    <li>
-                        <p>меню-текст-6</p>
-                    </li>
-                    <li>
-                        <p>меню-текст-7</p>
-                    </li>
-                    <li>
-                        <p>меню-текст-8</p>
-                    </li>
-                </ul>
+                <div class="scroll_wrapper">
+                    <ul class="my_scroll">
+                        <li>
+                            <p>меню-текст-1</p>
+                        </li>
+                        <li>
+                            <p>меню-текст-2</p>
+                        </li>
+                        <li>
+                            <p>меню-текст-3</p>
+                        </li>
+                        <li>
+                            <p>меню-текст-4</p>
+                        </li>
+                        <li>
+                            <p>меню-текст-5</p>
+                        </li>
+                        <li>
+                            <p>меню-текст-6</p>
+                        </li>
+                        <li>
+                            <p>меню-текст-7</p>
+                        </li>
+                        <li>
+                            <p>меню-текст-8</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="user_wrapper">
+                    <div class="user_info_wrapper"></div>
+                    <div class="user_image_wrapper">
+                        <img class="user_image">
+                    </div>
+                </div>
             </div>
             <div class="main">
                 <div class="menu_bar">
