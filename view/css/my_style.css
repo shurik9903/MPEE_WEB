@@ -27,6 +27,7 @@
 }
 
 @keyframes my_butt_anim {
+    
     0% {border-image-source: linear-gradient(135deg, #83e2ff, #0070da, #000e8d);}
 
     25% {border-image-source: linear-gradient(135deg, #000e8d, #83e2ff, #0070da );}
@@ -37,4 +38,10 @@
 
     100% {border-image-source: linear-gradient(135deg, #83e2ff, #0070da, #000e8d);}
 
+
+
+
+
+
+    100% {border-image-source: linear-gradient(135deg, rgb(0, 157, 255), rgb(210,210,255));}
 }

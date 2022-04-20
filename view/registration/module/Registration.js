@@ -9,8 +9,7 @@ let Registration_module = (()=>{
         async Registration_async(RegData) {
 
             let response = await my_fetch('registration/', { method: 'POST', headers: { 'Content-Type': 'application/json;charset=utf-8' }, body: JSON.stringify(RegData)});
-            //let response = await fetch('/MPEE/api/registration', { method: 'POST', headers: { 'Content-Type': 'application/json;charset=utf-8' }, body: JSON.stringify(RegData)});
-            
+           
             if (response.ok) {
                 let data = await response.json();
                 let Msg = "";

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {Start_module} from './module/start_page_module';
-//import {Login_module} from '../login/module/Login';
+import {Login_module} from '../login/module/Login';
 import {Registration_module} from '../registration/module/Registration';
 
 import '../css/start_page_style.css';
@@ -60,8 +60,46 @@ class Login_Form extends React.Component{
 
     constructor(props) {
         super(props);
-        this.state = {login: '', password: ''};
+        this.state = {login: '', password: '', info:''};
+    };
 
+    SetInfo = (text) => {
+        this.setState({info:`${text}`});
+    };
+
+    LoginClick = () => {
+
+        this.setState({
+            disabled: true,
+        });
+
+        let LoginData = {
+            login: this.state.login,
+            password: this.state.password
+        };
+            
+        let promise = Login_module.Login_async(LoginData);
+
+        let text = this.SetInfo;//(text)=>{console.log(text)}
+
+        promise.then(
+            result => FormWork_module.ShowWork(),
+            error => text(error)
+            ).finally(()=>
+                this.setState({
+                disabled: true,
+                })
+            );
+
+
+            // promise.then(
+            //     result => {text(result)},
+            //     error => {text(error); console.log("Errorororororo");}
+            // ).finally(()=> 
+            //     this.setState({
+            //         disabled: false,
+            //     })
+            // );
     };
 
     BackClick = () => {
@@ -102,11 +140,13 @@ class Login_Form extends React.Component{
                     </div>  
                 </div>,
                 <div class="E_info">
-                    <div class="text-info"></div>
+                    <div class="text-info">
+                        {this.state.info}
+                    </div>
                 </div>,
                 <div class="E_button">
                     <div class="back-button my-button" onClick={this.BackClick}>Назад</div>
-                    <div class="log-in-button my-button">Войти</div>
+                    <div class="log-in-button my-button" disabled={this.state.disabled} onClick={this.LoginClick}>Войти</div>
                 </div>
         ];
     };
@@ -121,7 +161,7 @@ class Regist_Form extends React.Component {
     };
 
     SetInfo = (text) => {
-        this.setState({info:text});
+        this.setState({info:`${text}`});
     };
 
     BackClick = () => {
@@ -143,7 +183,7 @@ class Regist_Form extends React.Component {
 
         let promise = Registration_module.Registration_async(RegData);
 
-        let text = (text)=>{console.log(text)}//this.SetInfo;
+        let text = this.SetInfo;//(text)=>{console.log(text)}
 
         promise.then(
             result => text(result),
@@ -153,9 +193,6 @@ class Regist_Form extends React.Component {
                 disabled: false,
             })
         );
-    
-        
-
     };
 
     mailChange = (event) => {

@@ -1,5 +1,7 @@
 "use strict";
-const my_fetch = require('../../module/my_fetch.js').my_fetch_async;
+
+import {my_fetch_module} from '../../module/my_fetch';
+const my_fetch = my_fetch_module.my_fetch_async;
 
 let Login_module = (() =>{
     class Login_class {
@@ -9,8 +11,7 @@ let Login_module = (() =>{
             let password = LoginData.password;
             
             let response = await my_fetch('login/' + login + '/' + password, { method: 'GET', headers: { 'Token': 'null' }})
-            //let login_response = await fetch('/MPEE/api/login/' + login + '/' + password, { method: 'GET', headers: { 'Token': 'null' }});
-            
+
             if (response.ok) {
                 const data = await response.json();
 
@@ -24,10 +25,7 @@ let Login_module = (() =>{
 
                 return 'ok';
             } else throw Error("response.serverError " + response.errors);
-
-
         };
-
     }
 
     let Login_token = LoginData => {

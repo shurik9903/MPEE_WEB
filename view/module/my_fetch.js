@@ -8,9 +8,7 @@ let my_fetch_module = (() => {
           }
 
         async my_fetch_async(external_address, options) {
-            let response = await fetch(this._baseURL + external_address, options);
-
-            return response;
+            return await fetch(this._baseURL + external_address, options);
         };
     }
 

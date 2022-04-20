@@ -43,12 +43,13 @@ let Start_module = (() =>  {
             
             var my_style_star = document.createElement('style');
             
-            let Star_Small = this.star_box_array(3000, {red: 90, green: 160, blue: 255}, {red: 60, green: 60, blue: 150});
-            let Star_Medium = this.star_box_array(1500, {red: 116, green: 181, blue: 255}, {red: 255, green: 220, blue: 180});
-            let Star_Large = this.star_box_array(1000, {red: 90, green: 90, blue: 150}, {red: 210, green: 210, blue: 255});
+            let Star_Small = this.star_box_array(3000, {red: 255, green: 255, blue: 255}, {red: 0, green: 150, blue: 255});
+            let Star_Medium = this.star_box_array(1500, {red: 255, green: 255, blue: 255}, {red: 255, green: 145, blue: 0} );
+            let Star_Large = this.star_box_array(1000, {red: 255, green: 255, blue: 255}, {red: 170, green: 170, blue: 170});
 
             my_style_star.innerHTML = 
             `.Star1, .Star2, .Star3 { 
+                
                 background: transparent;
                 position: absolute;
                 border-radius: 50%;
@@ -57,21 +58,24 @@ let Start_module = (() =>  {
             }
 
             .Star1 { 
+                -webkit-filter: blur(4px);
                 width: 1px; 
                 height: 1px; 
-                box-shadow: ${Star_Small}
+                box-shadow: ${Star_Small};
             }
             
-            .Star2 { 
+            .Star2 {
+                -webkit-filter: blur(2px); 
                 width: 3px; 
                 height: 3px; 
-                box-shadow: ${Star_Medium}
+                box-shadow: ${Star_Medium};
             }
 
-            .Star3 { 
+            .Star3 {
+                -webkit-filter: blur(1px); 
                 width: 8px; 
                 height: 8px; 
-                box-shadow: ${Star_Large}
+                box-shadow: ${Star_Large};
             }`;
             
 
