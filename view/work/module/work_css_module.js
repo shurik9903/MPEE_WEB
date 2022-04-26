@@ -57,6 +57,6 @@ let Work_CSS_module = (() => {
 })();
 
 
-module.exports = Work_CSS_module;
+export {Work_CSS_module};
 
 
