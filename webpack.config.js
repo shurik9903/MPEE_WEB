@@ -2,7 +2,8 @@ const path = require("path");
 const webpack = require("webpack");
 
 module.exports = {
-    mode:'production',
+    //mode:'production',
+    mode:'development',
     entry: './view/module/index.js',
     output: {
         path: __dirname + '/WEB/',

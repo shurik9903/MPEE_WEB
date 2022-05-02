@@ -21,8 +21,8 @@ body {
     color: #fff;
     margin: 1% 1%;
 
-    min-width: 800px;
-    min-height: 800px;
+    min-width: 1080px;
+    min-height: 1920px;
     height: 100vh;
 }
 
@@ -65,14 +65,14 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    max-width: 60%;
+    max-width: 50%;
 }
 
 .user_image_wrapper {
     display: flex;
     
     text-align: center;
-    max-width: 40%;
+    max-width: 50%;
 
     border-left: 5px solid rgb(100, 100, 100);
     border-right: 5px solid rgb(100, 100, 100);
@@ -82,7 +82,8 @@ body {
 }
 
 .user_image {
-    max-width: 100%;
+    max-width: 100px;
+    /* height: 100px; */
     content:url("prow_image.png");
 }
 
@@ -121,27 +122,58 @@ body {
     margin: 10px 2.5% 2.5%;
     position: relative;
     border-radius: 20px;
+
+    max-width: 95%;
     height: 0;
 }
 
 .game_window {
+    
     flex: 1 0 auto;
-    overflow: scroll;
+    overflow: auto;
+
     min-height: 100%;
-    height: 0;
+    max-width: 100%;
+
+    height: 0px;
+    
     background: #555;
     border-radius: 20px;
+    align-items: stretch;
 }
 
-.game {
+
+
+.game { 
+    position: relative;
+    
+    min-width: fit-content;
+    min-height: 100% !important;
+    max-width: 100%;
+
+    width: 100%;
+    
+}
+
+.game_back {
+    position: absolute;
+
     background: rgb(0, 0, 0);
-    min-width: 3000px;
-    min-height: 100%;
-    height: 2000px;
     background-image: url("791455802.jpg");
     background-size: 200px;
     animation: back_glowing 20s infinite;
-    border-radius: 20px;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 1;
+}
+
+.game_elements {
+    position: absolute;
+    z-index: 2;
+
+    
 }
 
 @keyframes back_glowing {
@@ -158,7 +190,10 @@ body {
     display: flex;
     position: absolute;
     z-index: 100;
-    min-height: 100%;
+    min-height: 97%;
+
+    margin-left: auto;
+    left: 0;
 }
 
 .bar {

@@ -1,0 +1,36 @@
+.Game_Grid {
+    display: grid;
+
+    border: 5px solid rgb(100, 100, 100);
+
+    grid-template-columns: repeat(3, minmax(min-content, min-content));
+    grid-template-rows: repeat(3, minmax(min-content, min-content));
+    max-width: min-content;
+    max-height: min-content;
+
+    gap: 50px;
+    padding: 50px;
+}
+
+.Player_Grid {
+    display: grid;
+
+    border: 5px solid rgb(100, 100, 100);
+
+    grid-template-columns: repeat(5, 100px);
+    grid-auto-rows: 100px;
+    gap: 10px;
+    padding: 10px;
+}
+
+.Cells {
+    display: block;
+
+    width: 100px;
+    height: 100px;
+
+    border: 5px solid rgb(100, 100, 100);
+
+    text-align: center;
+
+}

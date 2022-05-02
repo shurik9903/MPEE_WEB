@@ -22,9 +22,9 @@ const router = (
 );
 
 
-// <Route path="/" element={start_page} />
-//                 <Route path="/start" element={start_page} />
-//                 <Route path="/work" element={work_page} />
-//                 <Route path="*" element={start_page} />
+{/* <Route path="/" element={start_page} />
+                <Route path="/start" element={start_page} />
+                <Route path="/work" element={work_page} />
+                <Route path="*" element={start_page} /> */}
 
 root.render(router);

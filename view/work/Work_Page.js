@@ -4,16 +4,137 @@ import {Work_CSS_module} from './module/work_css_module';
 
 import '../css/my_style.css'
 import '../css/work_style.css'
+import '../css/Game_Grid.css'
 
+class Cells extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    componentDidMount() {};
+
+    componentWillUnmount() {};
+
+    render(){
+        return (
+            <div className="Cells" >
+                {'Text'}
+            </div>
+        );
+    };
+
+}
+
+class Player_Grid extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {Grid: {Rows: 5, Columns: 5, Cells: null}}
+    }
+
+    componentDidMount() {
+    
+        let All_Cells = [];
+
+        for (let i = 1; i <= this.state.Grid.Columns; i++)
+            for (let j = 1; j <= this.state.Grid.Rows; j++)
+                All_Cells.push(<Cells/>);    
+        
+        this.setState({Grid:{Cells: All_Cells}})
+
+
+    };
+
+    componentWillUnmount() {};
+
+    render(){
+        return (
+            <div className="Player_Grid" >
+                {this.state.Grid.Cells}
+            </div>
+        );
+    };
+}
+
+class Game_Grid extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    componentDidMount() {};
+
+    componentWillUnmount() {};
+
+    render(){
+        return (
+            <div className="Game_Grid" >
+                <Player_Grid/>
+                <Player_Grid/>
+                <Player_Grid/>
+                <Player_Grid/>
+                <Player_Grid/>
+                <Player_Grid/>
+                <Player_Grid/>
+                <Player_Grid/>
+                <Player_Grid/>
+            </div>
+        );
+    };
+
+}
+
+class Game_Window extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.scroll_comp = null;
+
+        this.setScrollRef = element => {
+            this.scroll_comp = element;
+        };
+    }
+
+    componentDidMount() {
+        if (this.scroll_comp)    
+            Work_CSS_module.My_Scroll(this.scroll_comp)
+    };
+
+    componentWillUnmount() {};
+
+    render(){
+        return (
+            <div className="game_window" ref={this.setScrollRef}>
+                
+                <div className="game">
+                    <div className='game_back'/>
+                    <div className='game_elements'>
+                        {this.props.children}
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
+}
 
 class My_Scroll extends React.Component {
     
     constructor(props) {
         super(props);
+
+        this.scroll_comp = null;
+
+        this.setScrollRef = element => {
+            this.scroll_comp = element;
+        };
     }
 
     componentDidMount() {
-        Work_CSS_module.My_Scroll(this)
+        if (this.scroll_comp)    
+            Work_CSS_module.My_Scroll(this.scroll_comp)
     };
 
     componentWillUnmount() {
@@ -22,19 +143,11 @@ class My_Scroll extends React.Component {
 
     render(){
         return (
-            <ul class="my_scroll">
-                <li>
-                    <p>левая-панель-текст-1</p>
-                </li>
-                <li>
-                    <p>левая-панель-текст-2</p>
-                </li>
-                <li>
-                    <p>левая-панель-текст-3</p>
-                </li>
+            <ul className="my_scroll" ref={this.setScrollRef}>
+                {this.props.children}
             </ul>
         );
-    }
+    };
 }
 
 class Work_Page extends React.Component {
@@ -67,11 +180,11 @@ class Work_Page extends React.Component {
         console.log('work_page::render');
 
         return (
-            <div class="wrapper">
-                <div class="back">
-                    <div class="menu-wrapper">
-                        <div class="scroll_wrapper">
-                            <ul class="my_scroll">
+            <div className="wrapper">
+                <div className="back">
+                    <div className="menu-wrapper">
+                        <div className="scroll_wrapper">
+                            <My_Scroll>
                                 <li>
                                     <p>меню-текст-1</p>
                                 </li>
@@ -96,24 +209,24 @@ class Work_Page extends React.Component {
                                 <li>
                                     <p>меню-текст-8</p>
                                 </li>
-                            </ul>
+                            </My_Scroll>
                         </div>
-                        <div class="user_wrapper">
-                            <div class="user_info_wrapper">
-                                <div class="user_id">ID: </div>
-                                <div class="user_name">Name: </div>
+                        <div className="user_wrapper">
+                            <div className="user_info_wrapper">
+                                <div className="user_id">ID: </div>
+                                <div className="user_name">Name: </div>
                             </div>
-                            <div class="user_image_wrapper">
-                                <img class="user_image"/>
+                            <div className="user_image_wrapper">
+                                <img className="user_image"/>
                             </div>
                         </div>
                     </div>
-                    <div class="main">
-                        <div class="menu_bar">
-                            <div class = "bar" style = {{ maxWidth: this.state.Bar_Width }}>
-                                <div class="left-bar">
-                                    <div class="scroll_bar_menu">
-                                        <ul class="my_scroll">
+                    <div className="main">
+                        <div className="menu_bar">
+                            <div className = "bar" style = {{ maxWidth: this.state.Bar_Width }}>
+                                <div className="left-bar">
+                                    <div className="scroll_bar_menu">
+                                        <My_Scroll> 
                                             <li>
                                                 <p>левая-панель-текст-1</p>
                                             </li>
@@ -123,158 +236,157 @@ class Work_Page extends React.Component {
                                             <li>
                                                 <p>левая-панель-текст-3</p>
                                             </li>
-                                        </ul>
+                                        </My_Scroll>
                                     </div>
-                                    <div class="view_menu">
-                                        <ul class="my_scroll">
-                                            <li>
-                                                <p>левая-панель-текст-1</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-2</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
+                                    <div className="view_menu">
+                                        <My_Scroll>
+                                        <li>
+                                            <p>левая-панель-текст-1</p>
                                         </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                        </ul>
+                                        <li>
+                                            <p>левая-панель-текст-2</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        </My_Scroll>
                                     </div>
                                 </div>
-                                <div class="right-bar">
-                                    <div class="view_menu">
-                                        <ul class="my_scroll">
-                                            <li>
-                                                <p>левая-панель-текст-1</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-2</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                            <li>
-                                                <p>левая-панель-текст-3</p>
-                                            </li>
-                                        </ul>
+                                <div className="right-bar">
+                                    <div className="view_menu">
+                                        <My_Scroll>
+                                        <li>
+                                            <p>левая-панель-текст-1</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-2</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        <li>
+                                            <p>левая-панель-текст-3</p>
+                                        </li>
+                                        </My_Scroll>
                                     </div>
                                 </div>
                             </div>
-                            <div class="collapse_button" onClick={this.Collapse}>{'\u2770'}</div>
+                            <div className="collapse_button" onClick={this.Collapse}>{'\u2770'}</div>
                         </div>
-                        <div class="game_window">
-                            <div class="game">
-                            </div>
-                        </div>
+                        <Game_Window>
+                            <Game_Grid/>
+                        </Game_Window>
                     </div>
                 </div>
             </div>
         );
-    }
+    };
 
-}
+};
 
-export {Work_Page}
+export {Work_Page};
