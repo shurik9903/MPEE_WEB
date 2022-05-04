@@ -2,15 +2,65 @@ import React from 'react';
 
 import {Work_CSS_module} from './module/work_css_module';
 
-import '../css/my_style.css'
-import '../css/work_style.css'
-import '../css/Game_Grid.css'
+// import '../css/my_style.css'
+// import '../css/work_style.css'
+// import '../css/Game_Grid.css'
 
-class Cells extends React.Component {
+class Drop extends React.Component {
+    
+    drop = (e) => {
+        e.preventDefault();
+        const data = e.dataTransfer.getData('transfer');
+        e.target.appendChild(document.getElementById(data));
+    };
+
+    allowDrop = (e) => {
+        e.preventDefault();
+    };
+
+    render(){
+        return(
+            <div id={this.props.id} onDrop={this.drop} onDragOver={this.allowDrop}>
+                {this.state.children}
+            </div>
+        );
+    };
+}
+
+class Drag extends React.Component {
+
+    drag = (e) => {
+        e.dataTransfer.setData('transfer', e.target.id);
+    };
+
+    noAllowDrop = (e) => {
+        e.stopPropagation();
+    };
+
+    render(){
+        return(
+            <div id={this.props.id} draggable="true" onDragStart={this.drag} onDragOver={this.noAllowDrop}>
+                {this.state.children}
+            </div>
+        );
+    };
+
+}
+
+
+class Market_Cells extends React.Component {
 
     constructor(props) {
         super(props);
-    }
+    };
+
+    drag = (e) => {
+        e.dataTransfer.setData('transfer', e.target.id);
+    };
+
+    noAllowDrop = (e) => {
+        e.stopPropagation();
+    };
 
     componentDidMount() {};
 
@@ -18,12 +68,29 @@ class Cells extends React.Component {
 
     render(){
         return (
-            <div className="Cells" >
+            <div className="market_cells" id={this.props.id} draggable="true" onDragStart={this.drag} onDragOver={this.noAllowDrop}>
                 {'Text'}
             </div>
         );
     };
+}
+class Game_Cells extends React.Component {
 
+    constructor(props) {
+        super(props);
+    };
+
+    componentDidMount() {};
+
+    componentWillUnmount() {};
+
+    render(){
+        return (
+            <div className="game_Cells" >
+                {'Text'}
+            </div>
+        );
+    };
 }
 
 class Player_Grid extends React.Component {
@@ -31,7 +98,7 @@ class Player_Grid extends React.Component {
     constructor(props) {
         super(props);
         this.state = {Grid: {Rows: 5, Columns: 5, Cells: null}}
-    }
+    };
 
     componentDidMount() {
     
@@ -39,7 +106,7 @@ class Player_Grid extends React.Component {
 
         for (let i = 1; i <= this.state.Grid.Columns; i++)
             for (let j = 1; j <= this.state.Grid.Rows; j++)
-                All_Cells.push(<Cells/>);    
+                All_Cells.push(<Game_Cells/>);    
         
         this.setState({Grid:{Cells: All_Cells}})
 
@@ -50,7 +117,7 @@ class Player_Grid extends React.Component {
 
     render(){
         return (
-            <div className="Player_Grid" >
+            <div className="player_Grid" >
                 {this.state.Grid.Cells}
             </div>
         );
@@ -61,7 +128,7 @@ class Game_Grid extends React.Component {
 
     constructor(props) {
         super(props);
-    }
+    };
 
     componentDidMount() {};
 
@@ -69,7 +136,7 @@ class Game_Grid extends React.Component {
 
     render(){
         return (
-            <div className="Game_Grid" >
+            <div className="game_Grid" >
                 <Player_Grid/>
                 <Player_Grid/>
                 <Player_Grid/>
@@ -95,7 +162,7 @@ class Game_Window extends React.Component {
         this.setScrollRef = element => {
             this.scroll_comp = element;
         };
-    }
+    };
 
     componentDidMount() {
         if (this.scroll_comp)    
@@ -130,11 +197,21 @@ class My_Scroll extends React.Component {
         this.setScrollRef = element => {
             this.scroll_comp = element;
         };
-    }
+    };
+
+    drop = (e) => {
+        e.preventDefault();
+        const data = e.dataTransfer.getData('transfer');
+        e.target.appendChild(document.getElementById(data));
+    };
+
+    allowDrop = (e) => {
+        e.preventDefault();
+    };
 
     componentDidMount() {
-        if (this.scroll_comp)    
-            Work_CSS_module.My_Scroll(this.scroll_comp)
+        // if (this.scroll_comp)    
+        //     Work_CSS_module.My_Scroll(this.scroll_comp)
     };
 
     componentWillUnmount() {
@@ -143,9 +220,9 @@ class My_Scroll extends React.Component {
 
     render(){
         return (
-            <ul className="my_scroll" ref={this.setScrollRef}>
+            <div className="my_scroll" ref={this.setScrollRef} id={this.props.id} onDrop={this.drop} onDragOver={this.allowDrop}>
                 {this.props.children}
-            </ul>
+            </div>
         );
     };
 }
@@ -156,7 +233,7 @@ class Work_Page extends React.Component {
         super(props);
         this.state = {Bar_Width: '100%'};
         console.log('work_page::constructor')
-    }
+    };
 
     Collapse = (event) => {
         if (this.state.Bar_Width){
@@ -238,140 +315,33 @@ class Work_Page extends React.Component {
                                             </li>
                                         </My_Scroll>
                                     </div>
-                                    <div className="view_menu">
-                                        <My_Scroll>
-                                        <li>
-                                            <p>левая-панель-текст-1</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-2</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
+                                    <div className="view_menu market">
+                                        <My_Scroll id='DR1'>
+                                        
+                                            <Market_Cells id='1'/>
+                                            <Market_Cells id='2'/>
+                                            <Market_Cells id='3'/>
+                                            <Market_Cells id='4'/>
+                                            <Market_Cells id='5'/>
+                                            <Market_Cells id='6'/>
+                                            <Market_Cells id='7'/>
+                                            <Market_Cells id='8'/>
+                                            <Market_Cells id='9'/>
+                                            <Market_Cells id='10'/>
+                                            <Market_Cells id='11'/>
+                                            <Market_Cells id='12'/>
+                                            <Market_Cells id='13'/>
+                                            <Market_Cells id='14'/>
+                                            <Market_Cells id='15'/>
+                                            <Market_Cells id='16'/>
+                                        
                                         </My_Scroll>
                                     </div>
                                 </div>
                                 <div className="right-bar">
-                                    <div className="view_menu">
-                                        <My_Scroll>
-                                        <li>
-                                            <p>левая-панель-текст-1</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-2</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
-                                        <li>
-                                            <p>левая-панель-текст-3</p>
-                                        </li>
+                                    <div className="view_menu bag">
+                                        <My_Scroll id='DR2'>
+                                            <Market_Cells id='17'/>
                                         </My_Scroll>
                                     </div>
                                 </div>
