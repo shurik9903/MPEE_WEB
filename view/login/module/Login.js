@@ -11,7 +11,8 @@ let Login_module = (() =>{
             let password = LoginData.password;
             
             let response = await my_fetch('login/' + login + '/' + password, { method: 'GET', headers: { 'Token': 'null' }})
-
+            .catch(error => {throw Error("Failed to fetch")});
+            
             if (response.ok) {
                 const data = await response.json();
 

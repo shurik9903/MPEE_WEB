@@ -8,17 +8,18 @@ let Registration_module = (()=>{
 
         async Registration_async(RegData) {
 
-            let response = await my_fetch('registration/', { method: 'POST', headers: { 'Content-Type': 'application/json;charset=utf-8' }, body: JSON.stringify(RegData)});
-           
-            if (response.ok) {
-                let data = await response.json();
-                let Msg = "";
+            let response = await my_fetch('registration/', { method: 'POST', headers: { 'Content-Type': 'application/json;charset=utf-8' }, body: JSON.stringify(RegData)})
+            .catch(error => {throw Error("Failed to fetch")});
 
-                if (data.Msg)
-                    Msg = data.Msg;
+            // if (response.ok) {
+            //     let data = await response.json();
+            //     let Msg = "";
 
-                return Msg;
-            } else throw Error("response.serverError" + response.errors);
+            //     if (data.Msg)
+            //         Msg = data.Msg;
+
+            //     return Msg;
+            // } else throw Error("response.serverError" + response.errors);
         };
     };
 
