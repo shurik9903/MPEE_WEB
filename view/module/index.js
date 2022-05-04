@@ -13,18 +13,25 @@ const work_page = (<Work_Page />);
 const router = (
           <Router>
               <Routes>
-                <Route path="/" element={work_page} />
+                <Route path="/" element={start_page} />
                 <Route path="/start" element={start_page} />
                 <Route path="/work" element={work_page} />
-                <Route path="*" element={work_page} />
+                <Route path="*" element={start_page} />
               </Routes>
           </Router>
 );
 
+// const router = (
+//   <Router>
+//       <Routes>
+//         <Route path="/" element={work_page} />
+//         <Route path="/start" element={start_page} />
+//         <Route path="/work" element={work_page} />
+//         <Route path="*" element={work_page} />
+//       </Routes>
+//   </Router>
+// );
 
-{/* <Route path="/" element={start_page} />
-                <Route path="/start" element={start_page} />
-                <Route path="/work" element={work_page} />
-                <Route path="*" element={start_page} /> */}
+
 
 root.render(router);

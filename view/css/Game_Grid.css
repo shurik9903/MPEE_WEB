@@ -1,7 +1,8 @@
-.Game_Grid {
+.game_Grid {
     display: grid;
 
     border: 5px solid rgb(100, 100, 100);
+    border-radius: 30px;
 
     grid-template-columns: repeat(3, minmax(min-content, min-content));
     grid-template-rows: repeat(3, minmax(min-content, min-content));
@@ -12,10 +13,11 @@
     padding: 50px;
 }
 
-.Player_Grid {
+.player_Grid {
     display: grid;
 
     border: 5px solid rgb(100, 100, 100);
+    border-radius: 20px;
 
     grid-template-columns: repeat(5, 100px);
     grid-auto-rows: 100px;
@@ -23,14 +25,38 @@
     padding: 10px;
 }
 
-.Cells {
+.game_Cells {
     display: block;
 
-    width: 100px;
-    height: 100px;
+    min-width: 100px;
+    min-height: 100px;
 
     border: 5px solid rgb(100, 100, 100);
+    border-radius: 10px;
 
     text-align: center;
 
+}
+
+.market_cells {
+
+    display: block;
+
+    min-width: 200px;
+    min-height: 200px;
+
+    border: 5px solid rgb(100, 100, 100);
+
+    margin: 10px;
+
+}
+
+.market .my_scroll {
+    align-items: center;
+    color: red;
+}
+
+.bag .my_scroll {
+    align-items: center;
+    color: red;
 }
