@@ -5,10 +5,8 @@ import {Login_module} from '../login/module/Login';
 import {Registration_module} from '../registration/module/Registration';
 import { useNavigate } from "react-router-dom";
 
-import '../css/start_page_style.css';
-import '../css/my_style.css';
-
-
+import page_style from '../css/start_page_style.css';
+import my_style from '../css/my_style.css';
 
 function Start_Form() {
 
@@ -89,11 +87,11 @@ function Login_Form() {
                     <div className="log-in-form">
                         <div className="input-log-in">
                             <p>Логин</p>
-                            <input type="text" size="25" className="name-log-in" value={login} onChange={() => setLogin(event.target.value)}/>
+                            <input type="text" size="25" className="name-log-in" value={login} onChange={() => setLogin(target.value)}/>
                         </div>
                         <div className="input-pass">
                             <p>Пароль</p>
-                            <input type="text" size="25" className="pass-log-in" value={password} onChange={() => setPassword(event.target.value)}/>
+                            <input type="text" size="25" className="pass-log-in" value={password} onChange={() => setPassword(target.value)}/>
                         </div>
                     </div>  
                 </div>
@@ -159,19 +157,19 @@ function Regist_Form() {
                     <div className="sign-up-form">
                         <div className="input-email">
                             <p>Почта</p>
-                            <input type="text" size="25" className="email-sign-up" value={mail} onChange={() => setMail(event.target.value)}/>
+                            <input type="text" size="25" className="email-sign-up" value={mail} onChange={() => setMail(target.value)}/>
                         </div>
                         <div className="input-login">
                             <p>Логин</p>
-                            <input type="text" size="25" className="login-sign-up" value={login} onChange={() => setLogin(event.target.value)}/>
+                            <input type="text" size="25" className="login-sign-up" value={login} onChange={() => setLogin(target.value)}/>
                         </div>
                         <div className="input-pass1">
                             <p>Пароль</p>
-                            <input type="text" size="25" className="pass1-sign-up" value={password1} onChange={() => setPassword1(event.target.value)}/>
+                            <input type="text" size="25" className="pass1-sign-up" value={password1} onChange={() => setPassword1(target.value)}/>
                         </div>
                         <div className="input-pass2">
                             <p>Повторите пароль</p>
-                            <input type="text" size="25" className="pass2-sign-up" value={password2} onChange={() => setPassword2(event.target.value)}/>
+                            <input type="text" size="25" className="pass2-sign-up" value={password2} onChange={() => setPassword2(target.value)}/>
                         </div>
                     </div>
                 </div>
