@@ -35,9 +35,9 @@ let Start_module = (() =>  {
             return All_Star.join();
         };
 
-        css_star() {
+        css_star(form) {
 
-            let form = document.querySelector('.main')
+            // let form = document.querySelector('.main')
 
             let top = form.offsetHeight
             
@@ -129,8 +129,8 @@ let Start_module = (() =>  {
     };
 
 
-    let Start = () => {
-        return new Start_class().css_star();
+    let Start = (form) => {
+        return new Start_class().css_star(form);
     }
 
     return{

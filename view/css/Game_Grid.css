@@ -1,4 +1,4 @@
-.game_Grid {
+.game_grid {
     display: grid;
 
     border: 5px solid rgb(100, 100, 100);
@@ -13,7 +13,7 @@
     padding: 50px;
 }
 
-.player_Grid {
+.player_grid {
     display: grid;
 
     border: 5px solid rgb(100, 100, 100);
@@ -25,7 +25,7 @@
     padding: 10px;
 }
 
-.game_Cells {
+.game_cells {
     display: block;
 
     min-width: 100px;

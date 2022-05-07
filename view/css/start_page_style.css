@@ -17,7 +17,7 @@
     height: 100vh;
 }
 
-.head,.footer {
+.head, .footer {
     z-index: 1;
     display: flex;
 
@@ -42,7 +42,7 @@
     border-top: 5px solid;
 }
 
-.head.border-gradient, .footer.border-gradient {
+.head.border_gradient, .footer.border_gradient {
     border-image-slice: 1;
     border-image-source: linear-gradient(to left,#d6e9ff 0%, #0077ff 5%,#004594 20%,#002857 40%,#001c3d 50%,
      #002857 60%,#004594 80%,#0077ff 95%,#d6e9ff 100%,transparent 80%);
@@ -74,7 +74,7 @@
     height: 0;
 }
 
-.entry.border-gradient {
+.entry.border_gradient {
     border: 10px solid;
     border-image-slice: 1;
 
@@ -133,7 +133,7 @@
     text-align: left;
 }
 
-.E_info .text-info {
+.E_info .text_info {
     min-width: 100%;
     width: 0;
     overflow: auto;
@@ -150,7 +150,7 @@
 
 }
 
-.E_main .log-in-form ,.E_main .sign-up-form {
+.E_main .log_in_form ,.E_main .sign_up_form {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -162,6 +162,6 @@
     overflow: auto;
 }
 
-.E_main .log-in-form > *, .E_main .sign-up-form > * {
+.E_main .log_in_form > *, .E_main .sign_up_form > * {
     padding: 10px;
 } 

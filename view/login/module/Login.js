@@ -3,6 +3,8 @@
 import {my_fetch_module} from '../../module/my_fetch';
 const my_fetch = my_fetch_module.my_fetch_async;
 
+import {UserData_module}  from '../../module/UserData';
+
 let Login_module = (() =>{
     class Login_class {
         async Login_async(LoginData) {
@@ -14,15 +16,21 @@ let Login_module = (() =>{
             .catch(error => {throw Error("Failed to fetch")});
             
             if (response.ok) {
+
                 const data = await response.json();
+
+                console.log(data)
 
                 if (data.Msg)
                     throw Error(data.Msg);
 
                 console.log(data);
-                ThisUser.UserID = data.UserID;
-                ThisUser.UserName = data.UserName;
-                ThisUser.UserToken = data.Token;
+                UserData_module.setUserID(data.UserID);
+                UserData_module.setUserLogin(data.UserName);
+                UserData_module.setUserToken(data.Token);
+                // ThisUser.UserID = data.UserID;
+                // ThisUser.UserName = data.UserName;
+                // ThisUser.UserToken = data.Token;
 
                 return 'ok';
             } else throw Error("response.serverError " + response.errors);

@@ -26,7 +26,46 @@ body {
     height: 100vh;
 }
 
-.menu-wrapper{
+.menu_wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.resources_wrapper {
+    display: flex;
+    flex-direction: row;
+
+    width: 95%;
+    height: 40px;
+    margin: 0px 2.5% 0px;
+
+    border: 5px solid rgb(100, 100, 100);
+    border-radius: 10px;
+
+    padding: 3px 5px;
+
+
+}
+
+.resources {
+    display: flex;
+
+    justify-content: flex-start;
+    align-items: center;
+
+    height: 100%;
+    width: 100%;
+
+    border: 1px solid rgb(100, 100, 100);
+}
+
+.resources_image {
+    height: 80%;
+
+    margin-left: 5px;
+}
+
+.basic_menu_wrapper{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -84,7 +123,7 @@ body {
 .user_image {
     max-width: 100px;
     /* height: 100px; */
-    content:url("prow_image.png");
+
 }
 
 .my_scroll {
@@ -159,7 +198,6 @@ body {
     position: absolute;
 
     background: rgb(0, 0, 0);
-    background-image: url("791455802.jpg");
     background-size: 200px;
     animation: back_glowing 20s infinite;
 
@@ -204,7 +242,7 @@ body {
     transition: max-width 0.2s ease-out;
 }
 
-.left-bar {
+.left_bar {
     background: rgb(20, 20, 20);
     display: flex;
     flex-direction: column;
@@ -214,7 +252,7 @@ body {
     max-width: 100%;
 }
 
-.right-bar {
+.right_bar {
     margin-top: 100px;
     background: rgb(20, 20, 20);
     display: flex;
@@ -267,6 +305,7 @@ body {
 .view_menu {
     background: rgb(20, 20, 20);
     flex: 1 0 auto;
+    
     height: 0;
     margin: 2.5% 2.5%;
 
@@ -274,6 +313,7 @@ body {
 }
 
 .view_menu .my_scroll{
+    align-items: center;
     min-height: 100%;
     height: 0;
     flex-direction: column;
