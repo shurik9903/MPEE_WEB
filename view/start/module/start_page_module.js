@@ -5,7 +5,7 @@ import {my_function_module} from '../../module/my_function';
 let my_rand = my_function_module.my_rand;
 let my_random_Color_Gradient = my_function_module.my_random_Color_Gradient;
 
-let Start_module = (() =>  {
+const Start_module = (() =>  {
 
     class Start_class {
 

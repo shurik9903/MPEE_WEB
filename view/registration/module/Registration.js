@@ -2,7 +2,7 @@
 import {my_fetch_module} from '../../module/my_fetch';
 const my_fetch = my_fetch_module.my_fetch_async;
 
-let Registration_module = (()=>{
+const Registration_module = (()=>{
 
     class Registration_class {
 

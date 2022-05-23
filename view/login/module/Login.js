@@ -5,8 +5,9 @@ const my_fetch = my_fetch_module.my_fetch_async;
 
 import {UserData_module}  from '../../module/UserData';
 
-let Login_module = (() =>{
+const Login_module = (() =>{
     class Login_class {
+        
         async Login_async(LoginData) {
 
             let login = LoginData.login;

@@ -58,7 +58,9 @@ function Login_Form() {
     const LoginClick = () => {
 
         setDisable(true);
-            
+
+        setInfo('');
+
         let LoginData = {
             login: login,
             password: password
@@ -124,7 +126,9 @@ function Regist_Form() {
 
     const RegistClick = () => {
         setDisable(true);
-        
+
+        setInfo('');
+
         let RegData = {
             email: mail,
             username: login,
