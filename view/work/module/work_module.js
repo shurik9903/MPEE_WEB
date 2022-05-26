@@ -76,9 +76,12 @@ const Work_module = (function(){
 
     class Work_class {
 
-        async GetWorkData_async(){
+        async GetWorkData_async(user_id){
 
-            let response = await my_fetch('work/' + UserData_module.getUserID(), { method: 'GET', headers: {'Token': UserData_module.getUserToken()}})
+            if (user_id == null)
+                user_id = UserData_module.getUserID()
+
+            let response = await my_fetch('work/' + user_id, { method: 'GET', headers: {'Token': UserData_module.getUserToken()}})
             .catch(error => {throw Error(error)});
 
             if(response.ok) {
@@ -96,8 +99,8 @@ const Work_module = (function(){
         };
     };
 
-    let WorkData = () => {
-        return new Work_class().GetWorkData_async();
+    let WorkData = (user_id = null) => {
+        return new Work_class().GetWorkData_async(user_id);
     }
 
     return{

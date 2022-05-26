@@ -26,8 +26,6 @@
 }
 
 
-
-
 .game_cells {
     display: block;
 
@@ -91,6 +89,7 @@
     border: 2px solid rgb(100, 100, 100);
     padding: 5px;
     border-radius: 5px;
+    background: rgba(0, 0, 0, 0.8);
 }
 
 .cells_head_image {

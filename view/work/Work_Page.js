@@ -155,80 +155,159 @@ function Game_Cells({cell_image = 'default'}) {
 
 };
 
-function Neighbor_Player_Grid() {
+function Neighbor_Player_Grid({id}) {
 
-    const [Grid,setGrid] = useState({Size: 11, Cells: null});
+    const {AllNeigh} = useGameGrid();
+
+    const [size, setSize] = useState(11);
+    const [grid, setGrid] = useState(null);
+
 
     useEffect(() => {
-        let All_Cells = [];
 
-        for (let i = 1; i <= Grid.Size; i++)
-            for (let j = 1; j <= Grid.Size; j++)
-                All_Cells.push(<Game_Cells id={10 * (i + 1) + j + 1}/> );    
-        
-        setGrid( prev => { return { ...prev, Cells: All_Cells}})
-    },[]);
+        (async () => {
+
+            let Cells = [];
+            let Cell;
+            let All_Cells = [];
+            let user_id = AllNeigh[id];
+
+            if (user_id >= 0){
+                let promise = await Work_module.GetWorkData_async(user_id);
+                Cells = JSON.parse(promise.Cell);
+            }
+
+            for (let i = 1; i <= size; i++){
+                for (let j = 1; j <= size; j++){
+                    Cell = Cells.find((data) => { return data.location.row == j && data.location.col == i})
+                    All_Cells.push(<Game_Cells id={10 * (i + 1) + j + 1} cell_image={Cell != null ? Cell.type : 'default'}/> );    
+                };
+            };
+            
+            setGrid(All_Cells);
+        })();
+
+    },[AllNeigh]);
 
     return (
-        <div className={game_grid_style.player_grid } style={{gridTemplateColumns: `repeat(${Grid.Size}, 100px)`}}>
-            {Grid.Cells}
+        <div className={game_grid_style.player_grid } style={{gridTemplateColumns: `repeat(${size}, 100px)`}}>
+            {grid}
         </div>
     );
 }
 
 
-function Player_Grid() {
+function Player_Grid({id}) {
 
-    const [Grid,setGrid] = useState({Size: 11, Cells: null});
+    const {data} = useGameGrid();
 
-    const {getCell} = useWork();
+    const [size, setSize] = useState(11);
+    const [grid, setGrid] = useState(null);
+
+
+    // const [Grid,setGrid] = useState({Size: 11, Cells: null});
+
+    // const {getCell} = useWork();
+
+    // useEffect(() => {
+        
+    //     (async () => {
+
+    //         let Cells;
+
+    //         let All_Cells = [];
+
+    //         let promise = await Work_module.GetWorkData_async();
+    //         Cells = JSON.parse(promise.Cell);
+
+    //         let Cell
+
+    //         for (let i = 1; i <= Grid.Size; i++){
+    //             for (let j = 1; j <= Grid.Size; j++){
+    //                 Cell = Cells.find((data) => { return data.location.row == j && data.location.col == i})
+    //                 All_Cells.push(<Game_Cells id={10 * (i + 1) + j + 1} cell_image={Cell ? Cell.type : 'default'}/> );    
+    //             };
+    //         };
+            
+    //         setGrid( prev => { return { ...prev, Cells: All_Cells}});
+    //     })();
+
+    // },[]);
 
     useEffect(() => {
-        
+
         (async () => {
 
-            let Cells;
-
+            let Cells = [];
+            let Cell;
             let All_Cells = [];
 
-            let promise = await Work_module.GetWorkData_async();
-            Cells = JSON.parse(promise.Cell);
+            Cells = JSON.parse(data.Cell);
 
-            let Cell
-
-            for (let i = 1; i <= Grid.Size; i++){
-                for (let j = 1; j <= Grid.Size; j++){
+            for (let i = 1; i <= size; i++){
+                for (let j = 1; j <= size; j++){
                     Cell = Cells.find((data) => { return data.location.row == j && data.location.col == i})
-                    All_Cells.push(<Game_Cells id={10 * (i + 1) + j + 1} cell_image={Cell ? Cell.type : 'default'}/> );    
+                    All_Cells.push(<Game_Cells id={10 * (i + 1) + j + 1} cell_image={Cell != null ? Cell.type : 'default'}/> );    
                 };
             };
             
-            setGrid( prev => { return { ...prev, Cells: All_Cells}});
+            setGrid(All_Cells);
         })();
 
-    },[]);
+    },[data]);
 
     return (
-        <div className={game_grid_style.player_grid } style={{gridTemplateColumns: `repeat(${Grid.Size}, 100px)`}}>
-            {Grid.Cells}
+        <div className={game_grid_style.player_grid } style={{gridTemplateColumns: `repeat(${size}, 100px)`}}>
+            {grid}
         </div>
     );
 };
 
 
+const GameGridContext = React.createContext();
+
+const useGameGrid = () => {
+    return useContext(GameGridContext);
+}
+
 function Game_Grid() {
+    const [neighbours,setNeighbours] = useState({});
+    const [playerData, setPlayerData] = useState(null);
+
+    useEffect(() => {
+        
+        (async () => {
+            let player = await Work_module.GetWorkData_async();
+            setPlayerData(player);
+            setNeighbours(JSON.parse(player.Neighbours));
+            // console.log(playerData);
+            // let Cell
+
+            // for (let i = 1; i <= Grid.Size; i++){
+            //     for (let j = 1; j <= Grid.Size; j++){
+            //         Cell = Cells.find((data) => { return data.location.row == j && data.location.col == i})
+            //         All_Cells.push(<Game_Cells id={10 * (i + 1) + j + 1} cell_image={Cell ? Cell.type : 'default'}/> );    
+            //     };
+            // };
+            
+            // setGrid( prev => { return { ...prev, Cells: All_Cells}});
+        })();
+
+    },[]);
 
     return(
             <div className={game_grid_style.game_grid} >
-                <Neighbor_Player_Grid id={11}/>
-                <Neighbor_Player_Grid id={12}/>
-                <Neighbor_Player_Grid id={13}/>
-                <Neighbor_Player_Grid id={21}/>
-                <Player_Grid id={'player'}/>
-                <Neighbor_Player_Grid id={23}/>
-                <Neighbor_Player_Grid id={31}/>
-                <Neighbor_Player_Grid id={32}/>
-                <Neighbor_Player_Grid id={33}/>
+                <GameGridContext.Provider value={{AllNeigh: neighbours, data: playerData}}>
+                    <Neighbor_Player_Grid id={'TL'}/>
+                    <Neighbor_Player_Grid id={'T'}/>
+                    <Neighbor_Player_Grid id={'TR'}/>
+                    <Neighbor_Player_Grid id={'L'}/>
+                    <Player_Grid id={'player'}/>
+                    <Neighbor_Player_Grid id={'R'}/>
+                    <Neighbor_Player_Grid id={'DL'}/>
+                    <Neighbor_Player_Grid id={'D'}/>
+                    <Neighbor_Player_Grid id={'DL'}/>
+                </GameGridContext.Provider>
             </div>
     );
 
