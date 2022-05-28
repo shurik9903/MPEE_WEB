@@ -361,7 +361,8 @@ body {
 
     align-self: center;
 
-    border: 5px solid var(--main-border-color);
+    box-shadow: inset 0px 0px 20px 5px rgba(0, 157, 255, 0.726);
+
     border-radius: 20px;
 
     background: rgb(88, 88, 88);
@@ -371,10 +372,12 @@ body {
     
     font-size: 20px;
     
+    user-select: none;
 }
 
 .collapse_button:hover {
     cursor: pointer;
+    background-color: rgb(162, 162, 162);
 }
 
 .scroll_bar_menu {
@@ -440,5 +443,35 @@ body {
 }
 
 
+.market_modal_button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 20px 5px 20px;
 
+}
+
+.market_modal_button * {
+    user-select: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px 5px rgba(0, 0, 0, 0.9);
+}   
+
+.market_modal_button .ok {
+    background: rgba(0, 255, 0, 0.7);
+}
+
+.market_modal_button .ok:hover {
+    background: rgba(0, 255, 0, 1);
+}
+
+.market_modal_button .cancel {
+    background: rgba(255, 0, 0, 0.8);
+}
+
+.market_modal_button .cancel:hover {
+    background: rgba(255, 0, 0, 1);
+}
   

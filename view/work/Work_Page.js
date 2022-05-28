@@ -3,61 +3,155 @@ import React, {useState, useEffect, useRef, useContext} from 'react';
 import {Work_CSS_module} from './module/work_css_module';
 import {UserData_module} from '../module/UserData';
 import {Market_module, Work_module} from './module/work_module';
-import { Image_module } from '../module/Image_module';
+import {Image_module} from '../module/Image_module';
 
-import {Cells} from './module/Cells'
-
-// import my_style from '../css/my_style.css';
 import work_style from '../css/work_style.css'; 
 import game_grid_style from '../css/Game_Grid.css'; 
-import my_style from '../css/my_style.css';
-
-// import coin from '../image/resources/moneti.png';
-// import wood from '../image/resources/brevna.png';
-// import iron from '../image/resources/iron.png';
-// import crystal from '../image/resources/cristall.png';
 
 import user_image from '../image/prow_image.png'
 import star_image from '../image/791455802.jpg';
 
-// function Drop({children, id}) {
+import modal_style from '../css/Modal_style.css'
+import slider_style from '../css/Slider_style.css'
 
-//     const drop = (e) => {
-//         e.preventDefault();
-//         const data = e.dataTransfer.getData('transfer');
-//         e.target.appendChild(document.getElementById(data));
-//     };
+function Slider_Range(props) {
 
-//     const allowDrop = (e) => {
-//         e.preventDefault();
-//     };
+    const {
+        step, 
+        min, 
+        max, 
+        value, 
+        defaultLength, 
+        OnChangeValue
+    } = props;
 
-//     return(
-//         <div id={id} onDrop={drop} onDragOver={allowDrop}>
-//             {children}
-//         </div>
-//     );
-// };
+    const rangeRef = useRef();
+    const [range, setRange] = useState(defaultLength);
 
-// function Drag({children, id}) {
+    useEffect(() => {
+        const rangeValue = parseInt(rangeRef.current.value, 10);
+        rangeLinearGradient(rangeValue, min, max);
 
-//     const drag = (e) => {
-//         e.dataTransfer.setData('transfer', e.target.id);
-//     };
-
-//     const noAllowDrop = (e) => {
-//         e.stopPropagation();
-//     };
-
-//     return(
-//         <div id={id} draggable="true" onDragStart={drag} onDragOver={noAllowDrop}>
-//             {children}
-//         </div>
-//     );
-
-// };
+    }, [rangeRef, min, max]);
 
 
+    const calculatePercentage = (value, min, max) => {
+        return ((value - min) / (max - min)) * 100;
+    }
+
+    const rangeLinearGradient = (value, min, max) => {
+        const percentage = calculatePercentage(value, min, max);
+
+        const newBackgroundStyle = `linear-gradient(90deg, var(--main-slider-min-color1) ${percentage* 0.1 + '%'}, var(--main-slider-min-color2) ${percentage + '%'}, var(--main-slider-max-color) ${percentage + '%'} 100%)`;
+        
+        rangeRef.current.style.background = newBackgroundStyle;
+    }
+
+    const HandleChange = max => e => {
+
+        let value = e.target.value;
+        OnChangeValue(value);
+        setRange(value);
+        rangeLinearGradient(value, min, max);
+    }
+
+    return(
+        <>
+            <div className={slider_style.slider}>
+                <input className={slider_style.slider_range} 
+                ref={rangeRef}
+                type='range'
+                step={step}
+                min={min}
+                max={max}
+                value={value}
+                onChange={HandleChange(max)}
+                />
+                <div className={slider_style.slider_value}>{value}</div>
+                <div className={slider_style.slider_min_max}>
+                    <div>{min}</div><div>{max}</div>
+                </div>
+            </div>
+        </>
+    )
+}
+
+Slider_Range.defaultProps = {
+    step: 1,
+    min: 0,
+    max: 100,
+    value: 50,
+    defaultLength: 100, 
+    OnChangeValue: (e) => {}
+  }
+
+
+function Market_Modal({count, callback}) {
+
+    const {close} = useModal();
+
+    const [slider_value, setSliderValue] = useState(0);
+
+    const OnChangeValueSlider = value => {
+        setSliderValue(parseInt(value, 10));
+    }
+
+    return (
+        <>
+            <div>Количество</div>
+            <Slider_Range 
+            min={0} 
+            max={count} 
+            step={1} 
+            defaultLength={slider_value} 
+            value={slider_value}
+            OnChangeValue={OnChangeValueSlider}
+            />
+            <div className={work_style.market_modal_button}>
+                <div className={work_style.ok} onClick={() => {callback(slider_value); close()}}>
+                    Купить
+                </div>
+                <div className={work_style.cancel} onClick={() => {close()}}>
+                    Отмена
+                </div>
+            </div>
+        </>
+    )
+}
+
+const ModalContext = React.createContext();
+
+const useModal = () => {
+    return useContext(ModalContext);
+}
+
+function ModalWindow({active, setActive, children}){
+
+    const close = () => {
+        setActive(false);
+    }
+
+
+
+    // useEffect(()=>{
+    //     if (!active)
+    //         children = null;
+    // },[active])
+
+    return(
+        <div className={active ? `${modal_style.modal} ${modal_style.active}` : modal_style.modal} onClick={close}>
+            <div className={active ? `${modal_style.modal_body} ${modal_style.active}` : modal_style.modal_body} onClick={e => e.stopPropagation()}>
+                <div className={modal_style.close} onClick={close}>X</div>
+                <ModalContext.Provider value={{
+                    close: close
+                }}>
+                    {children}
+                </ModalContext.Provider>
+            </div>
+        </div>
+    );
+
+};
 
 function Market_Cells({id, InType, InCount, InPrice}) {
 
@@ -67,6 +161,8 @@ function Market_Cells({id, InType, InCount, InPrice}) {
 
     const drag = (e) => {
         e.dataTransfer.setData('transfer', e.target.id);
+        // e.dataTransfer.setData('count', count);
+        // e.dataTransfer.setData('this', e.target);
     };
 
     const noAllowDrop = (e) => {
@@ -99,12 +195,12 @@ function Market_Cells({id, InType, InCount, InPrice}) {
 
 
     return(
-        <div className={game_grid_style.market_cells} id={id} draggable="true" onDragStart={drag} onDragOver={noAllowDrop}>
-            <div className={game_grid_style.count_field}>
+        <div className={game_grid_style.market_cells} id={id} draggable={true} onDragStart={drag} onDragOver={noAllowDrop}>
+            <div id={'count'} className={game_grid_style.count_field}>
                 {count}
             </div>
-            <img className={game_grid_style.cells_head_image} draggable={false} src={Image_module[type]}/>
-            <div className={game_grid_style.price}>
+            <img id={'img'} className={game_grid_style.cells_head_image} draggable={false} src={Image_module[type]}/>
+            <div id={'price'} className={game_grid_style.price}>
                 {price}
             </div>
         </div>
@@ -145,7 +241,7 @@ function Bag_Cells({id, InType, InCount}) {
 
 };
 
-function Game_Cells({cell_image = 'default'}) {
+function Game_Cells({cell_image = 'default', dropping = false}) {
 
     return(
         <div className={game_grid_style.game_cells} >
@@ -168,7 +264,7 @@ function Neighbor_Player_Grid({id}) {
         (async () => {
 
             let Cells = [];
-            let Cell;
+            let Cell = null;
             let All_Cells = [];
             let user_id = AllNeigh[id];
 
@@ -204,45 +300,16 @@ function Player_Grid({id}) {
     const [size, setSize] = useState(11);
     const [grid, setGrid] = useState(null);
 
-
-    // const [Grid,setGrid] = useState({Size: 11, Cells: null});
-
-    // const {getCell} = useWork();
-
-    // useEffect(() => {
-        
-    //     (async () => {
-
-    //         let Cells;
-
-    //         let All_Cells = [];
-
-    //         let promise = await Work_module.GetWorkData_async();
-    //         Cells = JSON.parse(promise.Cell);
-
-    //         let Cell
-
-    //         for (let i = 1; i <= Grid.Size; i++){
-    //             for (let j = 1; j <= Grid.Size; j++){
-    //                 Cell = Cells.find((data) => { return data.location.row == j && data.location.col == i})
-    //                 All_Cells.push(<Game_Cells id={10 * (i + 1) + j + 1} cell_image={Cell ? Cell.type : 'default'}/> );    
-    //             };
-    //         };
-            
-    //         setGrid( prev => { return { ...prev, Cells: All_Cells}});
-    //     })();
-
-    // },[]);
-
     useEffect(() => {
 
         (async () => {
 
             let Cells = [];
-            let Cell;
+            let Cell = null;
             let All_Cells = [];
 
-            Cells = JSON.parse(data.Cell);
+            if (data)
+                Cells = JSON.parse(data.Cell);
 
             for (let i = 1; i <= size; i++){
                 for (let j = 1; j <= size; j++){
@@ -274,26 +341,14 @@ function Game_Grid() {
     const [neighbours,setNeighbours] = useState({});
     const [playerData, setPlayerData] = useState(null);
 
+    const {getUserData} = useWork();
+
     useEffect(() => {
-        
-        (async () => {
-            let player = await Work_module.GetWorkData_async();
-            setPlayerData(player);
-            setNeighbours(JSON.parse(player.Neighbours));
-            // console.log(playerData);
-            // let Cell
-
-            // for (let i = 1; i <= Grid.Size; i++){
-            //     for (let j = 1; j <= Grid.Size; j++){
-            //         Cell = Cells.find((data) => { return data.location.row == j && data.location.col == i})
-            //         All_Cells.push(<Game_Cells id={10 * (i + 1) + j + 1} cell_image={Cell ? Cell.type : 'default'}/> );    
-            //     };
-            // };
-            
-            // setGrid( prev => { return { ...prev, Cells: All_Cells}});
-        })();
-
-    },[]);
+        if (getUserData){
+            setPlayerData(getUserData);
+            setNeighbours(JSON.parse(getUserData.Neighbours));
+        }
+    },[getUserData]);
 
     return(
             <div className={game_grid_style.game_grid} >
@@ -306,7 +361,7 @@ function Game_Grid() {
                     <Neighbor_Player_Grid id={'R'}/>
                     <Neighbor_Player_Grid id={'DL'}/>
                     <Neighbor_Player_Grid id={'D'}/>
-                    <Neighbor_Player_Grid id={'DL'}/>
+                    <Neighbor_Player_Grid id={'DR'}/>
                 </GameGridContext.Provider>
             </div>
     );
@@ -340,38 +395,115 @@ function Game_Window({children}) {
 };
 
 
-function My_Scroll({children, id, dropping = false}) {
-
+function Market_Scroll({children, id}){
     const scroll_comp = useRef(null);
+    const [cells, setCells] = useState([]);
+
+    const {setMarketChild} = useWork();
 
     const setScrollRef = (element) => {
         scroll_comp.current = element
     };
 
+    useEffect(()=>{
+        setCells(children);
+    },[children])
+
+    useEffect(()=>{
+        setMarketChild(cells);
+    }, [cells])
+
+    return(
+        <div className={work_style.my_scroll} ref={setScrollRef} id={id}>
+            {cells}
+        </div>
+    )
+}
+
+function Shopping_Scroll({id}) {
+
+    const {setModalVisible, setModalChild, Market_Shop_Swap, getMarketChild} = useWork();
+    const [cells, setCells] = useState([]);
+
     const drop = (e) => {
         e.preventDefault();
-        const data = e.dataTransfer.getData('transfer');
-        e.target.appendChild(document.getElementById(data));
+
+        const e_id = e.dataTransfer.getData('transfer');
+        const cell = getMarketChild.find(element => {
+            return element.props.id == e_id;
+        }).props;
+
+        
+        const buy = slider_count => {
+            console.log('test111 ', cells);
+
+            const in_cell = cells.find(element => {
+                return element.props.id == cell.id;
+            });
+
+            if (!in_cell){
+                console.log("1")
+
+                if (cell.InCount - slider_count <= 0) {
+                    setCells(prev => [...prev, <Market_Cells 
+                        id={cell.id} 
+                        InType={cell.InType} 
+                        InCount={cell.InCount} 
+                        InPrice={cell.InPrice}/>]);
+                }else{
+                    setCells(prev => [...prev, <Market_Cells 
+                        id={cell.id} 
+                        InType={cell.InType} 
+                        InCount={slider_count} 
+                        InPrice={cell.InPrice}/>]);
+                }    
+            }else{
+                console.log("2")
+
+                const cells_copy = cells.map( element => {
+                    if (element.props.id ==  cell.id){
+                        return <Market_Cells 
+                        id={element.props.id}
+                        InType={element.props.InType} 
+                        InCount={element.props.InCount + slider_count} 
+                        InPrice={element.props.InPrice}/> 
+                    };
+                    return element;
+                });
+                
+                console.log('test222', cells_copy);
+
+                setCells([...cells_copy]);
+            }
+        };
+
+
+        // const removeItem = (id) => {
+        //     setItems(items.filter(item => item.id !== id));
+        //   }
+
+        setModalChild(<Market_Modal count={cell.InCount} callback={buy}/>);
+        setModalVisible(true);
+
     };
 
     const allowDrop = (e) => {
         e.preventDefault();
     };
 
-    if (dropping)
-        return(
-            <div className={work_style.my_scroll} ref={setScrollRef} id={id} onDrop={drop} onDragOver={allowDrop}>
-                {children}
-            </div>
-        );
-    
+    return(
+        <div className={work_style.my_scroll} id={id} onDrop={drop} onDragOver={allowDrop}>
+            {cells}
+        </div>
+    )
+};
+
+function My_Scroll({children}) {
     return(
         <div className={work_style.my_scroll}>
             {children}
         </div>
     );
-        
-
 };
 
 function Bar_Menu() {
@@ -399,27 +531,25 @@ function Bar_Menu() {
 function User_Bag() {
 
     const [bag, setBag] = useState('');
+    const {getUserData} = useWork();
 
     useEffect(()=>{
 
         console.log('User_Bag::componentDidMount');
 
-        (async () => {
+        let Bag = JSON.parse(getUserData.Bag);
 
-            let promise = await Work_module.GetWorkData_async();
-            let Bag = JSON.parse(promise.Bag);
+        let AllBag = []
 
-            let AllBag = []
+        Bag.forEach(prod => 
+            AllBag.push(<Bag_Cells id={prod.id} InType={prod.type} InCount={prod.number}/>)
+        )
 
-            Bag.forEach(prod => 
-                AllBag.push(<Bag_Cells id={prod.id} InType={prod.type} InCount={prod.number}/>)
-            )
-
-            setBag(AllBag);
-        })();
+        setBag(AllBag);
 
 
-    },[]);
+
+    },[getUserData]);
 
     return(
         <div className={`${work_style.view_menu}`}>
@@ -433,17 +563,15 @@ function User_Bag() {
 function Shopping_Cart() {
     return(
         <div className={`${work_style.view_menu} ${game_grid_style.bag}`}>
-            <My_Scroll id='DR2' dropping={true}>
-                
-            </My_Scroll>
+            <Shopping_Scroll id='Shop_Cart'>
+            </Shopping_Scroll>
         </div>
     );
-
 }
 
 function Market() {
 
-    const {Shopping_Cart} = useBar();
+    const {Shopping_Cart_Visible} = useBar();
 
     const [MarketCells, setMarketCells] = useState('');
 
@@ -463,23 +591,20 @@ function Market() {
             )
 
             setMarketCells(AllProd);
-
         })();
 
-
-
-        Shopping_Cart(true);
+        Shopping_Cart_Visible(true);
 
         return() => {
-            Shopping_Cart(false);
+            Shopping_Cart_Visible(false);
         };
     }, [])
 
     return(
         <div className={`${work_style.view_menu} ${game_grid_style.market}`}>
-            <My_Scroll id='DR1' dropping={true} >
+            <Market_Scroll id='Market'>
                 {MarketCells}
-            </My_Scroll>
+            </Market_Scroll>
         </div>
     );
 
@@ -536,7 +661,7 @@ const BarProvider = () => {
         <BarContext.Provider value={{
             Info:() => setLeft_page(''),
             Market:() => setLeft_page(<Market/>),
-            Shopping_Cart: Show_Shopping_Cart,
+            Shopping_Cart_Visible: Show_Shopping_Cart,
             UserBag:() => setLeft_page(<User_Bag/>)
         }}>
             <div className ={work_style.bar} style = {{ maxWidth: Bar_Width }}>
@@ -563,17 +688,19 @@ function UserResourse() {
     const [iron, setIron] = useState(0);
     const [crystal, setCrystal] = useState(0);
 
-    useEffect(()=>{
-        (async () => {
-            let promise = await Work_module.GetWorkData_async();
-            let resources = JSON.parse(promise.Resources);
+    const {getUserData} = useWork();
 
+    useEffect(()=>{
+
+        if (getUserData){
+            let resources = JSON.parse(getUserData.Resources);
             setCoin(resources.coin);
             setWood(resources.wood);
             setIron(resources.iron);
             setCrystal(resources.crystal);
-        })();
-    },[])
+        }
+
+    },[getUserData])
 
     return (
         <div className={work_style.resources_wrapper}>
@@ -613,42 +740,14 @@ function Work_Page() {
 
     console.log('work_page::constructor')
 
+    const [modal, setModal] = useState();
+    const [ModalVisible, setModalVisible] = useState(false);
+    const [modalChild, setModalChild] = useState('');
+    const [marketChild, setMarketChild] = useState([]);
     
     const [id, setid] = useState('');
     const [name, setName] = useState('');
-
-    const [bag, setBag] = useState('');
-    const [cell, setCell] = useState('');
-    const [resources, setResources] = useState('');
-
-
-    const server_data = () => {
-
-        let promise = Work_module.GetWorkData_async();
-
-                // let text = document.getElementById("Result");
-
-        promise.then(result => {
-            
-            let Bag = JSON.parse(result.Bag);
-            let Resources = JSON.parse(result.Resources);
-            let Cell = JSON.parse(result.Cell);
-            
-            setBag(Bag);
-            setCell(Cell);
-            setResources(Resources);
-
-        })
-        .catch(error => {
-            if (error.status != 403){
-                console.log(error);
-            }else{
-                console.log(error);
-            }
-        });
-
-    }
-    
+    const [userData,setUserData] = useState('');
 
     useEffect(() => {
         console.log('work_page::componentDidMount');
@@ -656,21 +755,37 @@ function Work_Page() {
         setName(UserData_module.getUserLogin());
         setid(UserData_module.getUserID());
 
-        // let data = Work_module.GetWorkData_async();
+        (async () => {
+            let userData = await Work_module.GetWorkData_async();
+            setUserData(userData);
+        })();
 
         return(() => {
             console.log('work_page::componentWillUnmount');
         });
     }, []);
 
+    useEffect(()=>{
+        if (!ModalVisible)
+            setModalChild();
+    }, [ModalVisible])
+
+
+    const Market_Shop_Swap = () =>{
+
+    };
+
     return (
         <div className={work_style.wrapper}>
             <div className={work_style.back}>
                 <WorkContext.Provider value={{
-                    getCell: () => {return cell},
-                    getBag: () => {return bag},
-                    getResources: () => {return resources}
-                }}>
+                        getUserData: userData,
+                        setModalVisible: setModalVisible,
+                        setModalChild: setModalChild,
+                        Market_Shop_Swap: Market_Shop_Swap,
+                        getMarketChild: marketChild,
+                        setMarketChild: setMarketChild
+                    }}>
                     <div className={work_style.menu_wrapper}>
                         <div className={work_style.basic_menu_wrapper}>
                             <div className={work_style.scroll_wrapper}>
@@ -723,7 +838,11 @@ function Work_Page() {
                     </div>
                 </WorkContext.Provider>
             </div>
+            <ModalWindow active={ModalVisible} setActive={setModalVisible}>
+                {modalChild}
+            </ModalWindow>
         </div>
+
     );
 };
 
