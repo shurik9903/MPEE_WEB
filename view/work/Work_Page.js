@@ -153,11 +153,12 @@ function ModalWindow({active, setActive, children}){
 
 };
 
-function Market_Cells({id, InType, InCount, InPrice}) {
+function Market_Cells({id, InType, InCount, InPrice, InData}) {
 
     const [price, setPrice] = useState('');
-    const [count, setCount] = useState('');
-    const [type, setType] = useState('');
+    // const [count, setCount] = useState('');
+    // const [type, setType] = useState('');
+    const [data, setData] = useState('');
 
     const drag = (e) => {
         e.dataTransfer.setData('transfer', e.target.id);
@@ -173,16 +174,18 @@ function Market_Cells({id, InType, InCount, InPrice}) {
 
         let AllPrice = [];
 
-        setCount(InCount);
-        setType(InType);
+        // setCount(InCount);
+        // setType(InType);
+        setData(InData);
 
-        if (InPrice) {
-            Object.keys(InPrice).forEach(key => {
+
+        if (data.InPrice) {
+            Object.keys(data.InPrice).forEach(key => {
                 AllPrice.push(
                     (
                         <div className={game_grid_style.block_price}>
                             <img draggable={false} src={Image_module[key]}/>
-                            {InPrice[key]}
+                            {data.InPrice[key]}
                         </div>
                     )
                 );
@@ -195,11 +198,11 @@ function Market_Cells({id, InType, InCount, InPrice}) {
 
 
     return(
-        <div className={game_grid_style.market_cells} id={id} draggable={true} onDragStart={drag} onDragOver={noAllowDrop}>
+        <div className={game_grid_style.market_cells} id={data.id} draggable={true} onDragStart={drag} onDragOver={noAllowDrop}>
             <div id={'count'} className={game_grid_style.count_field}>
-                {count}
+                {data.InCount}
             </div>
-            <img id={'img'} className={game_grid_style.cells_head_image} draggable={false} src={Image_module[type]}/>
+            <img id={'img'} className={game_grid_style.cells_head_image} draggable={false} src={Image_module[data.InType]}/>
             <div id={'price'} className={game_grid_style.price}>
                 {price}
             </div>
@@ -420,68 +423,83 @@ function Shopping_Scroll({id}) {
     const {setModalVisible, setModalChild, getMarketChild} = useWork();
 
     const [cells, setCells] = useState([]);
+    const [data, setData] = useState([]);
 
+    useEffect(()=>{
+        console.log('datarender  ', data);
+    },[data])
 
     const drop = (e) => {
         e.preventDefault();
 
+
+
         const e_id = e.dataTransfer.getData('transfer');
         const cell = getMarketChild.find(element => {
-            return element.props.id == e_id;
-        }).props;
+            console.log(element.props);
+            return element.props.InData.id == e_id;
+        }).props.InData;
 
         
         const buy = slider_count => {
             console.log('test111 ', cells);
             
             const in_cell = cells.findIndex(element => {
-                return element.props.id == cell.id;
+                return element.props.InData.id == cell.id;
             });
 
             
-            let new_cell;
+            let new_data;
 
             if (in_cell < 0){
                 console.log("1", in_cell)
 
-
                 if (cell.InCount - slider_count <= 0) {
-                    new_cell = <Market_Cells
-                        id={cell.id} 
-                        key={cell.id}
-                        InType={cell.InType} 
-                        InCount={cell.InCount} 
-                        InPrice={cell.InPrice}/>;
+                    new_data = {
+                        id:cell.id,
+                        InType: cell.InType, 
+                        InCount: cell.InCount,
+                        InPrice: cell.InPrice};
                 }else{
-                    new_cell = <Market_Cells 
-                        id={cell.id} 
-                        key={cell.id}
-                        InType={cell.InType} 
-                        InCount={slider_count} 
-                        InPrice={cell.InPrice}/>;
-                }    
+                    new_data = {
+                        id: cell.id, 
+                        InType: cell.InType, 
+                        InCount: slider_count, 
+                        InPrice: cell.InPrice};
+                } 
+                
+                setCells(prev => [...prev, <Market_Cells 
+                    InData={new_data}/>]);
 
-                setCells(prev => [...prev, new_cell]);
+                setData(prev => [...prev, new_data]);
 
             }else{
                 console.log("2");
 
-                const cells_copy = cells.map( element => {
-                    if (element.props.id ==  cell.id){
-                        return <Market_Cells 
-                        id={element.props.id}
-                        key={element.props.id}
-                        InType={element.props.InType} 
-                        InCount={element.props.InCount + slider_count} 
-                        InPrice={element.props.InPrice}/> 
-                    };
+                setData([...data].map(element => {
+                    console.log(element);
+                    if (element.id == cell.id){
+                        console.log('id  ',element);
+                        return {
+                            ...element,
+                            InCount: element.InCount + slider_count
+                        }
+                    }
                     return element;
-                });
-                
-                console.log('test222', cells_copy);
+                }))
 
-                setCells(cells_copy);
+                console.log('data', data);
+                console.log('cells', cells);
 
+                // cells.forEach(element => {
+                //     if (element.id ==  cell.id){
+                //         element.id = cell.id, 
+                //         element.key = cell.id,
+                //         element.InType = cell.InType, 
+                //         element.InCount = slider_count, 
+                //         element.InPrice = cell.InPrice
+                //     }
+                // });
 
                 // new_cell = cells.find(element => {
                 //     return element.id == cell.id;
@@ -578,6 +596,7 @@ function Shopping_Scroll({id}) {
         // const removeItem = (id) => {
         //     setItems(items.filter(item => item.id !== id));
         //   }
+        
 
         setModalChild(<Market_Modal count={cell.InCount} callback={buy}/>);
         setModalVisible(true);
@@ -680,10 +699,19 @@ function Market() {
             let promise = await Market_module.GetMarketData_async();
             let Products = JSON.parse(promise.Products)
 
-            let AllProd = [];
+            const AllProd = [];
 
-            Products.forEach(prod => 
-                AllProd.push(<Market_Cells id={prod.id} InType={prod.block} InCount={prod.count} InPrice={prod.price}/>)
+            let data;
+
+            Products.forEach(prod => {
+                    data = {
+                        id: prod.id, 
+                        InType: prod.block, 
+                        InCount: prod.count, 
+                        InPrice: prod.price};
+
+                    AllProd.push(<Market_Cells InData={data}/>)
+                }
             )
 
             setMarketCells(AllProd);
