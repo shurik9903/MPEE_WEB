@@ -418,7 +418,7 @@ function Market_Scroll({children, id}){
 function Shopping_Scroll({id}) {
 
     const {setModalVisible, setModalChild, Market_Shop_Swap, getMarketChild} = useWork();
-    const [cells, setCells] = useState({});
+    const [cells, setCells] = useState([]);
 
     const drop = (e) => {
         e.preventDefault();
@@ -433,7 +433,7 @@ function Shopping_Scroll({id}) {
             console.log('test111 ', cells);
             
             const in_cell = cells.findIndex(element => {
-                return element.props.id == cell.id;
+                return element.id == cell.id;
             });
 
             
@@ -444,42 +444,56 @@ function Shopping_Scroll({id}) {
 
 
                 if (cell.InCount - slider_count <= 0) {
-                    new_cell = <Market_Cells 
+                    new_cell = {id: cell.id, value:<Market_Cells 
                         id={cell.id} 
                         InType={cell.InType} 
                         InCount={cell.InCount} 
-                        InPrice={cell.InPrice}/>;
+                        InPrice={cell.InPrice}/>};
                 }else{
-                    new_cell = <Market_Cells 
+                    new_cell = {id: cell.id, value:<Market_Cells 
                         id={cell.id} 
                         InType={cell.InType} 
                         InCount={slider_count} 
-                        InPrice={cell.InPrice}/>;
+                        InPrice={cell.InPrice}/>};
                 }    
 
+                // setCells(prev => [...prev, new_cell]);
                 setCells(prev => [...prev, new_cell]);
+
 
             }else{
                 console.log("2");
 
+
+
                 new_cell = cells.find(element => {
-                    return element.props.id == cell.id;
-                }).props;
+                    return element.id == cell.id;
+                }).value.props;
 
 
-                new_cell = <Market_Cells 
+                new_cell ={id: in_cell + 1, value: <Market_Cells 
                 id={new_cell.id} 
                 InType={new_cell.InType} 
                 InCount={new_cell.InCount + slider_count} 
-                InPrice={new_cell.InPrice}/>
+                InPrice={new_cell.InPrice}/>};
 
-                console.log('1   ', ...cells.slice(0, in_cell));
-                console.log('2   ', new_cell);
-                console.log('3   ', ...cells.slice(in_cell + 1));
+                setCells([...cells].map(element => {
 
-                setCells(update([...cells.slice(0, in_cell), new_cell, ...cells.slice(in_cell + 1)]));
+                    console.log('ele  ',element);
 
-                // const ar = [...cells];
+                    if (element.id == in_cell + 1)
+                        return new_cell;
+                    
+                    return element;
+                }));
+
+                // console.log('1   ', ...cells.slice(0, in_cell));
+                // console.log('2   ', new_cell);
+                // console.log('3   ', ...cells.slice(in_cell + 1));
+
+                // setCells(update([...cells.slice(0, in_cell), new_cell, ...cells.slice(in_cell + 1)]));
+
+                // // const ar = [...cells];
                 // // ar.push(
                 // //     ar.map( element => {
                 // //             if (element.props.id ==  cell.id){
@@ -558,7 +572,7 @@ function Shopping_Scroll({id}) {
 
     return(
         <div className={work_style.my_scroll} id={id} onDrop={drop} onDragOver={allowDrop}>
-            {cells}
+            {cells.map(element => {return element.value})}
         </div>
     )
 };
