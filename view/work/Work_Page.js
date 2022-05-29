@@ -419,142 +419,143 @@ function Shopping_Scroll({id}) {
 
     const {setModalVisible, setModalChild, Market_Shop_Swap, getMarketChild} = useWork();
     const [cells, setCells] = useState([]);
+    
 
     const drop = (e) => {
         e.preventDefault();
 
-        const e_id = e.dataTransfer.getData('transfer');
-        const cell = getMarketChild.find(element => {
-            return element.props.id == e_id;
-        }).props;
+        // const e_id = e.dataTransfer.getData('transfer');
+        // const cell = getMarketChild.find(element => {
+        //     return element.props.id == e_id;
+        // }).props;
 
         
         const buy = slider_count => {
-            console.log('test111 ', cells);
+            // console.log('test111 ', cells);
             
-            const in_cell = cells.findIndex(element => {
-                return element.id == cell.id;
-            });
+            // const in_cell = cells.findIndex(element => {
+            //     return element.id == cell.id;
+            // });
 
             
-            let new_cell;
+            // let new_cell;
 
-            if (in_cell < 0){
-                console.log("1", in_cell)
-
-
-                if (cell.InCount - slider_count <= 0) {
-                    new_cell = {id: cell.id, value:<Market_Cells 
-                        id={cell.id} 
-                        InType={cell.InType} 
-                        InCount={cell.InCount} 
-                        InPrice={cell.InPrice}/>};
-                }else{
-                    new_cell = {id: cell.id, value:<Market_Cells 
-                        id={cell.id} 
-                        InType={cell.InType} 
-                        InCount={slider_count} 
-                        InPrice={cell.InPrice}/>};
-                }    
-
-                // setCells(prev => [...prev, new_cell]);
-                setCells(prev => [...prev, new_cell]);
+            // if (in_cell < 0){
+            //     console.log("1", in_cell)
 
 
-            }else{
-                console.log("2");
+            //     if (cell.InCount - slider_count <= 0) {
+            //         new_cell = {id: cell.id, value:<Market_Cells 
+            //             id={cell.id} 
+            //             InType={cell.InType} 
+            //             InCount={cell.InCount} 
+            //             InPrice={cell.InPrice}/>};
+            //     }else{
+            //         new_cell = {id: cell.id, value:<Market_Cells 
+            //             id={cell.id} 
+            //             InType={cell.InType} 
+            //             InCount={slider_count} 
+            //             InPrice={cell.InPrice}/>};
+            //     }    
+
+            //     // setCells(prev => [...prev, new_cell]);
+            //     setCells(prev => [...prev, new_cell]);
+
+
+            // }else{
+            //     console.log("2");
 
 
 
-                new_cell = cells.find(element => {
-                    return element.id == cell.id;
-                }).value.props;
+            //     new_cell = cells.find(element => {
+            //         return element.id == cell.id;
+            //     }).value.props;
 
 
-                new_cell ={id: in_cell + 1, value: <Market_Cells 
-                id={new_cell.id} 
-                InType={new_cell.InType} 
-                InCount={new_cell.InCount + slider_count} 
-                InPrice={new_cell.InPrice}/>};
+            //     new_cell ={id: in_cell + 1, value: <Market_Cells 
+            //     id={new_cell.id} 
+            //     InType={new_cell.InType} 
+            //     InCount={new_cell.InCount + slider_count} 
+            //     InPrice={new_cell.InPrice}/>};
 
-                setCells([...cells].map(element => {
+            //     setCells([...cells].map(element => {
 
-                    console.log('ele  ',element);
+            //         console.log('ele  ',element);
 
-                    if (element.id == in_cell + 1)
-                        return new_cell;
+            //         if (element.id == in_cell + 1)
+            //             return new_cell;
                     
-                    return element;
-                }));
+            //         return element;
+            //     }));
 
-                // console.log('1   ', ...cells.slice(0, in_cell));
-                // console.log('2   ', new_cell);
-                // console.log('3   ', ...cells.slice(in_cell + 1));
+            //     // console.log('1   ', ...cells.slice(0, in_cell));
+            //     // console.log('2   ', new_cell);
+            //     // console.log('3   ', ...cells.slice(in_cell + 1));
 
-                // setCells(update([...cells.slice(0, in_cell), new_cell, ...cells.slice(in_cell + 1)]));
+            //     // setCells(update([...cells.slice(0, in_cell), new_cell, ...cells.slice(in_cell + 1)]));
 
-                // // const ar = [...cells];
-                // // ar.push(
-                // //     ar.map( element => {
-                // //             if (element.props.id ==  cell.id){
-                // //                 return <Market_Cells 
-                // //                 id={element.props.id}
-                // //                 InType={element.props.InType} 
-                // //                 InCount={element.props.InCount + slider_count} 
-                // //                 InPrice={element.props.InPrice}/> 
-                // //             };
-                // //             return element;
-                // //         })
-                // // )
-                // const cells_copy = []
-                // cells_copy.push(...cells_copy, ...ar.map( element => {
-                //     if (element.props.id ==  cell.id){
-                //         return <Market_Cells 
-                //         id={element.props.id}
-                //         InType={element.props.InType} 
-                //         InCount={element.props.InCount + slider_count} 
-                //         InPrice={element.props.InPrice}/> 
-                //     };
-                //     return element;
-                // }));
+            //     // // const ar = [...cells];
+            //     // // ar.push(
+            //     // //     ar.map( element => {
+            //     // //             if (element.props.id ==  cell.id){
+            //     // //                 return <Market_Cells 
+            //     // //                 id={element.props.id}
+            //     // //                 InType={element.props.InType} 
+            //     // //                 InCount={element.props.InCount + slider_count} 
+            //     // //                 InPrice={element.props.InPrice}/> 
+            //     // //             };
+            //     // //             return element;
+            //     // //         })
+            //     // // )
+            //     // const cells_copy = []
+            //     // cells_copy.push(...cells_copy, ...ar.map( element => {
+            //     //     if (element.props.id ==  cell.id){
+            //     //         return <Market_Cells 
+            //     //         id={element.props.id}
+            //     //         InType={element.props.InType} 
+            //     //         InCount={element.props.InCount + slider_count} 
+            //     //         InPrice={element.props.InPrice}/> 
+            //     //     };
+            //     //     return element;
+            //     // }));
 
 
-                // const cells_copy = cells.map( element => {
-                //     if (element.props.id ==  cell.id){
-                //         return <Market_Cells 
-                //         id={element.props.id}
-                //         InType={element.props.InType} 
-                //         InCount={element.props.InCount + slider_count} 
-                //         InPrice={element.props.InPrice}/> 
-                //     };
-                //     return element;
-                // });
+            //     // const cells_copy = cells.map( element => {
+            //     //     if (element.props.id ==  cell.id){
+            //     //         return <Market_Cells 
+            //     //         id={element.props.id}
+            //     //         InType={element.props.InType} 
+            //     //         InCount={element.props.InCount + slider_count} 
+            //     //         InPrice={element.props.InPrice}/> 
+            //     //     };
+            //     //     return element;
+            //     // });
                 
-                // console.log('test222', cells_copy);
+            //     // console.log('test222', cells_copy);
 
-                // setCells(cells_copy);
+            //     // setCells(cells_copy);
 
-                // setCells(prev => {
-                //     prev = null;
-                //     // prev.push(...cells_copy);
-                //     // console.log('prev ', prev);
-                //     return null;
-                // });
+            //     // setCells(prev => {
+            //     //     prev = null;
+            //     //     // prev.push(...cells_copy);
+            //     //     // console.log('prev ', prev);
+            //     //     return null;
+            //     // });
                 
-                // setCells(prev => {
-                //     prev = [...cells_copy];
-                //     return prev;
-                //     prev.push(...cells_copy);
-                //     console.log('prev ', prev);
-                //     return prev;
-                // });
-                // setCells(prev => {
-                //     prev = null;
-                //     // prev.push(...cells_copy);
-                //     // console.log('prev ', prev);
-                //     return [];
-                // });
-            }
+            //     // setCells(prev => {
+            //     //     prev = [...cells_copy];
+            //     //     return prev;
+            //     //     prev.push(...cells_copy);
+            //     //     console.log('prev ', prev);
+            //     //     return prev;
+            //     // });
+            //     // setCells(prev => {
+            //     //     prev = null;
+            //     //     // prev.push(...cells_copy);
+            //     //     // console.log('prev ', prev);
+            //     //     return [];
+            //     // });
+            // }
         };
 
 
@@ -651,26 +652,29 @@ function Shopping_Cart() {
 function Market() {
 
     const {Shopping_Cart_Visible} = useBar();
+    const {getMarketChild} = useWork();
 
-    const [MarketCells, setMarketCells] = useState('');
+
+
+    // const [MarketCells, setMarketCells] = useState('');
 
     useEffect(()=>{
 
         console.log('Market::componentDidMount');
 
-        (async () => {
+        // (async () => {
 
-            let promise = await Market_module.GetMarketData_async();
-            let Products = JSON.parse(promise.Products)
+        //     let promise = await Market_module.GetMarketData_async();
+        //     let Products = JSON.parse(promise.Products)
 
-            let AllProd = [];
+        //     let AllProd = [];
 
-            Products.forEach(prod => 
-                AllProd.push(<Market_Cells id={prod.id} InType={prod.block} InCount={prod.count} InPrice={prod.price}/>)
-            )
+        //     Products.forEach(prod => 
+        //         AllProd.push(<Market_Cells id={prod.id} InType={prod.block} InCount={prod.count} InPrice={prod.price}/>)
+        //     )
 
-            setMarketCells(AllProd);
-        })();
+        //     setMarketCells(AllProd);
+        // })();
 
         Shopping_Cart_Visible(true);
 
@@ -682,7 +686,7 @@ function Market() {
     return(
         <div className={`${work_style.view_menu} ${game_grid_style.market}`}>
             <Market_Scroll id='Market'>
-                {MarketCells}
+                {getMarketChild}
             </Market_Scroll>
         </div>
     );
@@ -822,7 +826,7 @@ function Work_Page() {
     const [modal, setModal] = useState();
     const [ModalVisible, setModalVisible] = useState(false);
     const [modalChild, setModalChild] = useState('');
-    const [marketchild, setMarketChild] = useState([]);
+    const [market, setMarketChild] = useState([]);
     const [shopchild, setShopChild] = useState([]);
     const [marketproduct, setMarketProduct] = useState([]);
     
@@ -841,6 +845,23 @@ function Work_Page() {
             setUserData(userData);
         })();
 
+
+
+        (async () => {
+
+            let promise = await Market_module.GetMarketData_async();
+            let Products = JSON.parse(promise.Products)
+
+            let AllProd = [];
+
+            Products.forEach(prod => 
+                AllProd.push(<Market_Cells id={prod.id} InType={prod.block} InCount={prod.count} InPrice={prod.price}/>)
+            )
+
+            setMarketChild(AllProd);
+        })();
+
+
         return(() => {
             console.log('work_page::componentWillUnmount');
         });
@@ -850,6 +871,10 @@ function Work_Page() {
         if (!ModalVisible)
             setModalChild();
     }, [ModalVisible])
+
+    useEffect(()=>{
+        console.log(marketchild);
+    }, [marketchild])
 
 
     const Market_Shop_Swap = () =>{
