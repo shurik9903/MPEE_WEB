@@ -396,14 +396,9 @@ function Game_Window({children}) {
 
 
 function Market_Scroll({children, id}){
-    const scroll_comp = useRef(null);
     const [cells, setCells] = useState([]);
 
-    const {setMarketChild} = useWork();
-
-    const setScrollRef = (element) => {
-        scroll_comp.current = element
-    };
+    const {setMarketChild, getMarketProduct, getShopChild} = useWork();
 
     useEffect(()=>{
         setCells(children);
@@ -414,7 +409,7 @@ function Market_Scroll({children, id}){
     }, [cells])
 
     return(
-        <div className={work_style.my_scroll} ref={setScrollRef} id={id}>
+        <div className={work_style.my_scroll} id={id}>
             {cells}
         </div>
     )
@@ -423,7 +418,7 @@ function Market_Scroll({children, id}){
 function Shopping_Scroll({id}) {
 
     const {setModalVisible, setModalChild, Market_Shop_Swap, getMarketChild} = useWork();
-    const [cells, setCells] = useState([]);
+    const [cells, setCells] = useState({});
 
     const drop = (e) => {
         e.preventDefault();
@@ -436,44 +431,115 @@ function Shopping_Scroll({id}) {
         
         const buy = slider_count => {
             console.log('test111 ', cells);
-
-            const in_cell = cells.find(element => {
+            
+            const in_cell = cells.findIndex(element => {
                 return element.props.id == cell.id;
             });
 
-            if (!in_cell){
-                console.log("1")
+            
+            let new_cell;
+
+            if (in_cell < 0){
+                console.log("1", in_cell)
+
 
                 if (cell.InCount - slider_count <= 0) {
-                    setCells(prev => [...prev, <Market_Cells 
+                    new_cell = <Market_Cells 
                         id={cell.id} 
                         InType={cell.InType} 
                         InCount={cell.InCount} 
-                        InPrice={cell.InPrice}/>]);
+                        InPrice={cell.InPrice}/>;
                 }else{
-                    setCells(prev => [...prev, <Market_Cells 
+                    new_cell = <Market_Cells 
                         id={cell.id} 
                         InType={cell.InType} 
                         InCount={slider_count} 
-                        InPrice={cell.InPrice}/>]);
+                        InPrice={cell.InPrice}/>;
                 }    
+
+                setCells(prev => [...prev, new_cell]);
+
             }else{
-                console.log("2")
+                console.log("2");
 
-                const cells_copy = cells.map( element => {
-                    if (element.props.id ==  cell.id){
-                        return <Market_Cells 
-                        id={element.props.id}
-                        InType={element.props.InType} 
-                        InCount={element.props.InCount + slider_count} 
-                        InPrice={element.props.InPrice}/> 
-                    };
-                    return element;
-                });
+                new_cell = cells.find(element => {
+                    return element.props.id == cell.id;
+                }).props;
+
+
+                new_cell = <Market_Cells 
+                id={new_cell.id} 
+                InType={new_cell.InType} 
+                InCount={new_cell.InCount + slider_count} 
+                InPrice={new_cell.InPrice}/>
+
+                console.log('1   ', ...cells.slice(0, in_cell));
+                console.log('2   ', new_cell);
+                console.log('3   ', ...cells.slice(in_cell + 1));
+
+                setCells(update([...cells.slice(0, in_cell), new_cell, ...cells.slice(in_cell + 1)]));
+
+                // const ar = [...cells];
+                // // ar.push(
+                // //     ar.map( element => {
+                // //             if (element.props.id ==  cell.id){
+                // //                 return <Market_Cells 
+                // //                 id={element.props.id}
+                // //                 InType={element.props.InType} 
+                // //                 InCount={element.props.InCount + slider_count} 
+                // //                 InPrice={element.props.InPrice}/> 
+                // //             };
+                // //             return element;
+                // //         })
+                // // )
+                // const cells_copy = []
+                // cells_copy.push(...cells_copy, ...ar.map( element => {
+                //     if (element.props.id ==  cell.id){
+                //         return <Market_Cells 
+                //         id={element.props.id}
+                //         InType={element.props.InType} 
+                //         InCount={element.props.InCount + slider_count} 
+                //         InPrice={element.props.InPrice}/> 
+                //     };
+                //     return element;
+                // }));
+
+
+                // const cells_copy = cells.map( element => {
+                //     if (element.props.id ==  cell.id){
+                //         return <Market_Cells 
+                //         id={element.props.id}
+                //         InType={element.props.InType} 
+                //         InCount={element.props.InCount + slider_count} 
+                //         InPrice={element.props.InPrice}/> 
+                //     };
+                //     return element;
+                // });
                 
-                console.log('test222', cells_copy);
+                // console.log('test222', cells_copy);
 
-                setCells([...cells_copy]);
+                // setCells(cells_copy);
+
+                // setCells(prev => {
+                //     prev = null;
+                //     // prev.push(...cells_copy);
+                //     // console.log('prev ', prev);
+                //     return null;
+                // });
+                
+                // setCells(prev => {
+                //     prev = [...cells_copy];
+                //     return prev;
+                //     prev.push(...cells_copy);
+                //     console.log('prev ', prev);
+                //     return prev;
+                // });
+                // setCells(prev => {
+                //     prev = null;
+                //     // prev.push(...cells_copy);
+                //     // console.log('prev ', prev);
+                //     return [];
+                // });
             }
         };
 
@@ -484,7 +550,6 @@ function Shopping_Scroll({id}) {
 
         setModalChild(<Market_Modal count={cell.InCount} callback={buy}/>);
         setModalVisible(true);
-
     };
 
     const allowDrop = (e) => {
@@ -743,7 +808,9 @@ function Work_Page() {
     const [modal, setModal] = useState();
     const [ModalVisible, setModalVisible] = useState(false);
     const [modalChild, setModalChild] = useState('');
-    const [marketChild, setMarketChild] = useState([]);
+    const [marketchild, setMarketChild] = useState([]);
+    const [shopchild, setShopChild] = useState([]);
+    const [marketproduct, setMarketProduct] = useState([]);
     
     const [id, setid] = useState('');
     const [name, setName] = useState('');
@@ -783,8 +850,11 @@ function Work_Page() {
                         setModalVisible: setModalVisible,
                         setModalChild: setModalChild,
                         Market_Shop_Swap: Market_Shop_Swap,
-                        getMarketChild: marketChild,
-                        setMarketChild: setMarketChild
+                        getMarketChild: marketchild,
+                        setMarketChild: setMarketChild,
+                        getShopChild: shopchild,
+                        setShopChild: setShopChild,
+                        getMarketProduct: marketproduct
                     }}>
                     <div className={work_style.menu_wrapper}>
                         <div className={work_style.basic_menu_wrapper}>
