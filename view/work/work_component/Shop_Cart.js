@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 
 import work_style from '../../css/work_style.css'; 
 import game_grid_style from '../../css/Game_Grid.css';
@@ -20,17 +20,63 @@ function Shopping_Cart() {
 function Shopping_Scroll({id}) {
 
     const {setModalVisible, setModalChild, getMarketChild, setShopChild, getShopChild} = useWork();
+    const shopRef = useRef([])
 
-    const drop = (e) => {
-        e.preventDefault();
+    const addToRef = (element) => {
+        if (element && !shopRef.current.includes(element))
+            shopRef.current.push(element);
+    }
 
-        const e_id = e.dataTransfer.getData('transfer');
-        const cell = getMarketChild.find(element => {
-            return element.props.id == e_id;
-        }).props;
+    const cancel = (count, id) => {
 
-        
-        const buy = slider_count => {
+        const apply_cancel = (count_cancel) => {
+
+            console.log('ref', shopRef.current);
+            
+            const in_cell = getShopChild.findIndex(element => {
+                return element.props.id == id;
+            });
+
+            console.log('incell ', in_cell);
+
+            if (in_cell >= 0){
+                
+                console.log('incell2 ', in_cell);
+
+                const cells_copy = getShopChild.map( element => {
+                    if (element.props.id ==  id){
+
+                        if (count - count_cancel <= 0)
+                            return null;
+
+                        return <Market_Cells
+                        cancel={cancel}
+                        draggable={false}
+                        id={element.props.id}
+                        InType={element.props.InType} 
+                        InCount={element.props.InCount - count_cancel} 
+                        InPrice={element.props.InPrice}/> 
+                    };
+                    return element;
+                }).filter(element => {
+                    return element != null;
+                });
+
+                setShopChild(cells_copy);
+                console.log(cells_copy);
+            }
+
+        }; 
+
+        setModalChild(<Market_Modal but_apply_text={'Вернуть'} but_cancel_text={'Отмена'} count={count} callback={apply_cancel}/>);
+        setModalVisible(true);
+    };
+    
+    const buy = (cell) => {
+
+        const apply_buy = slider_count => {
+
+            console.log(getShopChild)
             
             const in_cell = getShopChild.findIndex(element => {
                 return element.props.id == cell.id;
@@ -42,17 +88,24 @@ function Shopping_Scroll({id}) {
             if (in_cell < 0){
                 if (cell.InCount - slider_count <= 0) {
                     new_cell = <Market_Cells
+                        ref={addToRef}
+                        cancel={cancel}
+                        draggable={false}
                         id={cell.id} 
                         InType={cell.InType} 
                         InCount={cell.InCount} 
                         InPrice={cell.InPrice}/>;
                 }else{
-                    new_cell = <Market_Cells 
+                    new_cell = <Market_Cells
+                        ref={addToRef}
+                        cancel={cancel}
+                        draggable={false} 
                         id={cell.id} 
                         InType={cell.InType} 
                         InCount={slider_count} 
                         InPrice={cell.InPrice}/>;
                 }    
+
 
                 setShopChild(prev => [...prev, new_cell]);
 
@@ -60,6 +113,8 @@ function Shopping_Scroll({id}) {
                 const cells_copy = getShopChild.map( element => {
                     if (element.props.id ==  cell.id){
                         return <Market_Cells
+                        cancel={cancel}
+                        draggable={false}
                         id={element.props.id}
                         InType={element.props.InType} 
                         InCount={element.props.InCount + slider_count} 
@@ -67,15 +122,25 @@ function Shopping_Scroll({id}) {
                     };
                     return element;
                 });
+
                 setShopChild(cells_copy);
             }
-
-
-            
         };
 
-        setModalChild(<Market_Modal count={cell.InCount} callback={buy}/>);
+        setModalChild(<Market_Modal but_apply_text={'Купить'} but_cancel_text={'Отмена'} count={cell.InCount} callback={apply_buy}/>);
         setModalVisible(true);
+    }   
+
+
+    const drop = (e) => {
+        e.preventDefault();
+
+        const e_id = e.dataTransfer.getData('transfer');
+        const cell = getMarketChild.find(element => {
+            return element.props.id == e_id;
+        }).props;
+
+        buy(cell);
     };
 
     const allowDrop = (e) => {
@@ -83,6 +148,8 @@ function Shopping_Scroll({id}) {
     };
 
     useEffect(()=>{
+
+        
 
         return(()=>{
             setShopChild([]);

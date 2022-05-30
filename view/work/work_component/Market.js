@@ -92,7 +92,7 @@ function Market_Scroll({children, id}){
     )
 }
 
-function Market_Modal({count, callback}) {
+function Market_Modal({but_apply_text, but_cancel_text, count, callback}) {
 
     const {close} = useModal();
 
@@ -115,10 +115,10 @@ function Market_Modal({count, callback}) {
             />
             <div className={work_style.market_modal_button}>
                 <div className={work_style.ok} onClick={() => {callback(slider_value); close()}}>
-                    Купить
+                    {but_apply_text}
                 </div>
                 <div className={work_style.cancel} onClick={() => {close()}}>
-                    Отмена
+                    {but_cancel_text}
                 </div>
             </div>
         </>

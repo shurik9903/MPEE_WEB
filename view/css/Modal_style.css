@@ -1,7 +1,4 @@
 .modal {
-
-    
-
     z-index: 1000;
 
     height: 100vh;
@@ -40,7 +37,7 @@
 
     user-select: none;
     
-    background-color: rgba(0, 20, 40, 0.5);
+    background-color: rgba(200, 0, 0, 0.8);
     width: 25px;
     height: 25px;
     border-radius: 50%;
