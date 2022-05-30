@@ -4,7 +4,7 @@ import game_grid_style from '../../css/Game_Grid.css';
 import {Image_module} from '../../module/Image_module';
 
 
-const Market_Cells = forwardRef( ({id, InType, InCount, InPrice, cancel, draggable=true}, ref ) => {
+const Market_Cells = ({id, InType, InCount, InPrice, cancel, data, draggable=true} ) => {
 
     const [price, setPrice] = useState('');
     const [count, setCount] = useState('');
@@ -22,6 +22,28 @@ const Market_Cells = forwardRef( ({id, InType, InCount, InPrice, cancel, draggab
     };
 
     useEffect(()=>{
+        console.log('count changh', count)
+    },[count])
+
+    const getData = () => {
+
+        console.log('getData');
+        console.log(count);
+        
+        
+        return ({
+        getPrice: price,
+        getCount: count,
+        getType: type,
+        setPrice,
+        setCount,
+        setType,
+    })};
+
+    useEffect(()=>{
+
+        if (data)
+            data(id, getData);
 
         let AllPrice = [];
 
@@ -46,9 +68,6 @@ const Market_Cells = forwardRef( ({id, InType, InCount, InPrice, cancel, draggab
     },[])
 
     useEffect(()=>{
-
-        console.log(count);
-
         if (!draggable)
             setClose(<div className={game_grid_style.close_button} 
                 onClick={()=>cancel(count, id)}>X</div>);
@@ -58,7 +77,7 @@ const Market_Cells = forwardRef( ({id, InType, InCount, InPrice, cancel, draggab
 
 
     return(
-        <div ref={ref} className={game_grid_style.market_cells} id={id} draggable={draggable} onDragStart={drag} onDragOver={noAllowDrop}>
+        <div className={game_grid_style.market_cells} id={id} draggable={draggable} onDragStart={drag} onDragOver={noAllowDrop}>
             {close}
             <div id={'count'} className={game_grid_style.count_field}>
                 {count}
@@ -70,6 +89,6 @@ const Market_Cells = forwardRef( ({id, InType, InCount, InPrice, cancel, draggab
         </div>
     );
 
-});
+};
 
 export {Market_Cells};
