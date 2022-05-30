@@ -1,13 +1,13 @@
-import React, {useState, useEffect, forwardRef} from 'react';
+import React, {useState, useEffect, forwardRef, useImperativeHandle} from 'react';
 
 import game_grid_style from '../../css/Game_Grid.css';
 import {Image_module} from '../../module/Image_module';
 
 
-const Market_Cells = ({id, InType, InCount, InPrice, cancel, data, draggable=true} ) => {
+const Market_Cells = forwardRef(({id, InType, InCount, InPrice, cancel, draggable=true}, ref ) => {
 
     const [price, setPrice] = useState('');
-    const [count, setCount] = useState('');
+    const [count, setCount] = useState(0);
     const [type, setType] = useState('');
     const [close, setClose] = useState('');
 
@@ -21,29 +21,39 @@ const Market_Cells = ({id, InType, InCount, InPrice, cancel, data, draggable=tru
         e.stopPropagation();
     };
 
-    useEffect(()=>{
-        console.log('count changh', count)
-    },[count])
+    // useEffect(()=>{
+    //     console.log('count changh', count)
+    // },[count])
 
-    const getData = () => {
+    // const getData = () => {
 
-        console.log('getData');
-        console.log(count);
+    //     console.log('getData');
+    //     console.log(count);
         
         
-        return ({
-        getPrice: price,
-        getCount: count,
-        getType: type,
+    //     return ({
+    //     getPrice: () => price,
+    //     getCount: () => count,
+    //     getType: () => type,
+    //     setPrice,
+    //     setCount,
+    //     setType,
+    // })};
+
+    useImperativeHandle(ref, ()=>({
+        getId: () => id,
+        getPrice: () => {return price},
+        getCount: () => {return count},
+        getType: () => {return type},
         setPrice,
         setCount,
         setType,
-    })};
+    }), [price, count, type]);
 
     useEffect(()=>{
 
-        if (data)
-            data(id, getData);
+        // if (data)
+        //     data(id, getData);
 
         let AllPrice = [];
 
@@ -65,7 +75,7 @@ const Market_Cells = ({id, InType, InCount, InPrice, cancel, data, draggable=tru
 
         setPrice(AllPrice);
 
-    },[])
+    },[]);
 
     useEffect(()=>{
         if (!draggable)
@@ -73,22 +83,28 @@ const Market_Cells = ({id, InType, InCount, InPrice, cancel, data, draggable=tru
                 onClick={()=>cancel(count, id)}>X</div>);
         else
             setClose();
-    },[count])
+    },[count]);
 
+    // const test = (r) => {
+
+    //     if (ref)
+    //          ref({id: r});
+        
+    // }
 
     return(
-        <div className={game_grid_style.market_cells} id={id} draggable={draggable} onDragStart={drag} onDragOver={noAllowDrop}>
+        <div  className={game_grid_style.market_cells} id={id} draggable={draggable} onDragStart={drag} onDragOver={noAllowDrop}>
             {close}
-            <div id={'count'} className={game_grid_style.count_field}>
+            <div  className={game_grid_style.count_field}>
                 {count}
             </div>
-            <img id={'img'} className={game_grid_style.cells_head_image} draggable={false} src={Image_module[type]}/>
-            <div id={'price'} className={game_grid_style.price}>
+            <img  className={game_grid_style.cells_head_image} draggable={false} src={Image_module[type]}/>
+            <div  className={game_grid_style.price}>
                 {price}
             </div>
         </div>
     );
 
-};
+});
 
 export {Market_Cells};

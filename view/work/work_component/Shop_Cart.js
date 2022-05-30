@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 
 import work_style from '../../css/work_style.css'; 
 import game_grid_style from '../../css/Game_Grid.css';
@@ -20,26 +20,22 @@ function Shopping_Cart() {
 
 function Shopping_Scroll({id}) {
 
-    const {setModalVisible, setModalChild, getMarketChild, setShopChild, getShopChild} = useWork();
-    const [celldata, setCellData] = useState([]);
+    const {setModalVisible, setModalChild, getMarketChild, setShopChild, getShopChild} = useWork();    const CellRef = useRef([]);
 
-    const setData = (id, data) => {
+    const AddToRef = (element) => {
 
-        const find = celldata.findIndex(element => element.id == id)
+        console.log('element', element);
 
-        if (find < 0){
-            setCellData(prev => [...prev, {id: id, data: data}])
-        }else{
-            setCellData((prev) => {
-                return [
-                  ...prev.slice(0, find),
-                  {id: id, data: data},
-                  ...prev.slice(find)
-                ];
-              });
+        if (element){
+            const findRef = CellRef.current.findIndex(element=> element.getId() == element.getId()) 
+            if (findRef < 0){
+                CellRef.current.push(element)
+            }else{
+                CellRef.current[findRef] = element
+            }
         }
-        
     }
+
 
     const cancel = (count, id) => {
 
@@ -51,32 +47,39 @@ function Shopping_Scroll({id}) {
             
             const in_cell = getShopChild.findIndex(element => element.props.id == id);
 
-            console.log('incell ', in_cell);
-
             if (in_cell >= 0){
                 
                 console.log('incell2 ', in_cell);
 
-                const cells_copy = getShopChild.map( element => {
-                    if (element.props.id ==  id){
+                const cell_update = CellRef.current.find(element=> element.getId() == cell.id)
+                if (cell_update.getCount() - count_cancel <= 0){
+                    setShopChild(prev => prev.filter((element) => { 
+                        return element !== cell_update.getId(); 
+                    }));
+                }else{
+                    cell_update.setCount(cell_update.getCount() - slider_count);
+                }
 
-                        if (count - count_cancel <= 0)
-                            return null;
+                // const cells_copy = getShopChild.map( element => {
+                //     if (element.props.id ==  id){
 
-                        return <Market_Cells
-                        cancel={cancel}
-                        draggable={false}
-                        id={element.props.id}
-                        InType={element.props.InType} 
-                        InCount={element.props.InCount - count_cancel} 
-                        InPrice={element.props.InPrice}/> 
-                    };
-                    return element;
-                }).filter(element => {
-                    return element != null;
-                });
+                //         if (count - count_cancel <= 0)
+                //             return null;
 
-                setShopChild(cells_copy);
+                //         return <Market_Cells
+                //         cancel={cancel}
+                //         draggable={false}
+                //         id={element.props.id}
+                //         InType={element.props.InType} 
+                //         InCount={element.props.InCount - count_cancel} 
+                //         InPrice={element.props.InPrice}/> 
+                //     };
+                //     return element;
+                // }).filter(element => {
+                //     return element != null;
+                // });
+
+                // setShopChild(cells_copy);
                 
             }
 
@@ -104,59 +107,29 @@ function Shopping_Scroll({id}) {
             if (in_cell < 0){
                 if (cell.InCount - slider_count <= 0) {
                     new_cell = <Market_Cells
-                        data={setData}
                         cancel={cancel}
                         draggable={false}
                         id={cell.id} 
                         InType={cell.InType} 
                         InCount={cell.InCount} 
-                        InPrice={cell.InPrice}/>;
+                        InPrice={cell.InPrice}
+                        ref={AddToRef}/>;
                 }else{
                     new_cell = <Market_Cells
-                        data={setData}
                         cancel={cancel}
                         draggable={false} 
                         id={cell.id} 
                         InType={cell.InType} 
                         InCount={slider_count} 
-                        InPrice={cell.InPrice}/>;
+                        InPrice={cell.InPrice}
+                        ref={AddToRef}/>;
                 }    
 
                 setShopChild(prev => [...prev, new_cell]);
             }else{
 
-                const Dcell = celldata.find(element => element.id == cell.id).data();
-                const ICell = getShopChild.find(element => element.props.id == cell.id);
-                console.log(Dcell);
-                console.log(getShopChild);
-                console.log('count   ',   Dcell.getCount);
-                Dcell.setCount((Dcell.getCount + slider_count));
-                // console.log(Dcell.data.getCount());
-                // Dcell.data.setCount(Dcell.data.getCount() + slider_count);
-
-                // console.log('cellcdada ' ,celldata);
-
-
-                // getShopChild.forEach(element => {
-                //     if (element.props.id ==  cell.id)
-                //         console.log(element.props)
-                // });
-                // const cells_copy = getShopChild.map( element => {
-                //     if (element.props.id ==  cell.id){
-                //         return <Market_Cells
-                //         cancel={cancel}
-                //         draggable={false}
-                //         id={element.props.id}
-                //         InType={element.props.InType} 
-                //         InCount={element.props.InCount + slider_count} 
-                //         InPrice={element.props.InPrice}/> 
-                //     };
-                //     return element;
-                // });
-
-                // setShopChild(cells_copy);
-                // console.log(find);
-
+                const cell_update = CellRef.current.find(element=> element.getId() == cell.id)
+                cell_update.setCount(cell_update.getCount() + slider_count);
             }
         };
 
