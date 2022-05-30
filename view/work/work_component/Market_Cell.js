@@ -13,32 +13,11 @@ const Market_Cells = forwardRef(({id, InType, InCount, InPrice, cancel, draggabl
 
     const drag = (e) => {
         e.dataTransfer.setData('transfer', e.target.id);
-        // e.dataTransfer.setData('count', count);
-        // e.dataTransfer.setData('this', e.target);
     };
 
     const noAllowDrop = (e) => {
         e.stopPropagation();
     };
-
-    // useEffect(()=>{
-    //     console.log('count changh', count)
-    // },[count])
-
-    // const getData = () => {
-
-    //     console.log('getData');
-    //     console.log(count);
-        
-        
-    //     return ({
-    //     getPrice: () => price,
-    //     getCount: () => count,
-    //     getType: () => type,
-    //     setPrice,
-    //     setCount,
-    //     setType,
-    // })};
 
     useImperativeHandle(ref, ()=>({
         getId: () => id,
@@ -51,9 +30,6 @@ const Market_Cells = forwardRef(({id, InType, InCount, InPrice, cancel, draggabl
     }), [price, count, type]);
 
     useEffect(()=>{
-
-        // if (data)
-        //     data(id, getData);
 
         let AllPrice = [];
 
@@ -85,21 +61,14 @@ const Market_Cells = forwardRef(({id, InType, InCount, InPrice, cancel, draggabl
             setClose();
     },[count]);
 
-    // const test = (r) => {
-
-    //     if (ref)
-    //          ref({id: r});
-        
-    // }
-
     return(
-        <div  className={game_grid_style.market_cells} id={id} draggable={draggable} onDragStart={drag} onDragOver={noAllowDrop}>
+        <div className={game_grid_style.market_cells} id={id} draggable={draggable} onDragStart={drag} onDragOver={noAllowDrop}>
             {close}
-            <div  className={game_grid_style.count_field}>
+            <div className={game_grid_style.count_field}>
                 {count}
             </div>
-            <img  className={game_grid_style.cells_head_image} draggable={false} src={Image_module[type]}/>
-            <div  className={game_grid_style.price}>
+            <img className={game_grid_style.cells_head_image} draggable={false} src={Image_module[type]}/>
+            <div className={game_grid_style.price}>
                 {price}
             </div>
         </div>
