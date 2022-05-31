@@ -73,6 +73,9 @@ function Work_Page() {
             setModalChild();
     }, [ModalVisible])
 
+
+   
+
     return (
         <div className={work_style.wrapper}>
             <div className={work_style.back}>
