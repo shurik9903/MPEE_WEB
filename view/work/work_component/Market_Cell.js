@@ -1,5 +1,4 @@
-import React, {useState, useEffect, forwardRef, useImperativeHandle, useRef} from 'react';
-
+import React, {useState, useEffect, forwardRef, useImperativeHandle} from 'react';
 
 import game_grid_style from '../../css/Game_Grid.css';
 import {Image_module} from '../../module/Image_module';
@@ -49,22 +48,22 @@ const Market_Cells = forwardRef(({id, InType, InCount, InPrice, cancel, draggabl
                 );
             });
         }
+
         setPrice(AllPrice);
 
     },[]);
 
     useEffect(()=>{
-        console.log(cancel);
         if (!draggable)
             setClose(<div className={game_grid_style.close_button} 
-                onClick={()=>cancel.current(count, id)}>X</div>);
+                onClick={()=>cancel(count, id)}>X</div>);
         else
             setClose();
     },[count]);
 
-    // useEffect(()=>{
-    //     console.log('funcupdate');
-    // },[cancel])
+    useEffect(()=>{
+        console.log('funcupdate');
+    },[cancel])
 
 
     return(

@@ -23,14 +23,12 @@ function Shopping_Scroll({id}) {
     const {setModalVisible, setModalChild, getMarketChild, setShopChild, getShopChild} = useWork();    
     const CellRef = useRef([]);
     const ChildRef = useRef();
-    const fRef = useRef();
 
-    
     ChildRef.current = getShopChild;
 
     const AddToRef = (element) => {
         if (element){
-            const findRef = getShopChild.findIndex(element=> element.getId() == element.getId()) 
+            const findRef = CellRef.current.findIndex(element=> element.getId() == element.getId()) 
             if (findRef < 0)
                 CellRef.current.push(element)
             else
@@ -38,16 +36,14 @@ function Shopping_Scroll({id}) {
         }
     };    
 
-    const cancel = (count, id) => {
+    const cancel = useCallback((count, id) => {
 
         const apply_cancel = count_cancel => {
-
-            console.log(getShopChild)
 
             if (count_cancel <= 0)
                 return;
  
-            const in_cell = getShopChild.findIndex(element => element.props.id == id);
+            const in_cell = ChildRef.current.findIndex(element => element.props.id == id);
 
             if (in_cell >= 0){
                 
@@ -68,12 +64,9 @@ function Shopping_Scroll({id}) {
 
         setModalChild(<Market_Modal but_apply_text={'Вернуть'} but_cancel_text={'Отмена'} count={count} callback={apply_cancel}/>);
         setModalVisible(true);
-    };
+    },[]);
 
-    useEffect(()=>{
-        fRef.current = cancel;
-    },[getShopChild])
-
+    
     const buy = (cell) => {
 
         const apply_buy = slider_count => {
@@ -93,7 +86,7 @@ function Shopping_Scroll({id}) {
             if (in_cell < 0){
                 if (cell.InCount - slider_count <= 0) {
                     new_cell = <Market_Cells
-                        cancel={fRef}
+                        cancel={cancel}
                         draggable={false}
                         id={cell.id} 
                         InType={cell.InType} 
@@ -102,7 +95,7 @@ function Shopping_Scroll({id}) {
                         ref={AddToRef}/>;
                 }else{
                     new_cell = <Market_Cells
-                        cancel={fRef}
+                        cancel={cancel}
                         draggable={false} 
                         id={cell.id} 
                         InType={cell.InType} 
